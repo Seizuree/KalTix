@@ -54,9 +54,8 @@ const Product: PageComponent = () => {
     });
   }, [product, state]);
 
-  const handleDetail = () => {
-    if (!product) return {};
-
+  const handleBooking = () => {
+    if (!product) return;
     dispatchBooked(command.booked.create(product));
   };
 
@@ -94,7 +93,7 @@ const Product: PageComponent = () => {
       <div>{product?.title}</div>
       {genreNames}
       <pre>{product ? JSON.stringify(product, null, 2) : null}</pre>
-      <Button onClick={handleDetail}>Check</Button>
+      <Button onClick={handleBooking}>Book Ticket</Button>
     </>
   );
 };

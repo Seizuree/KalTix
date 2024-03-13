@@ -45,7 +45,7 @@ const bookedCommand = {
     return (dispatch) => {
       if (product) {
         const value: ProductBooked = {
-          productBooked: [product]
+          booked: [product]
         };
 
         dispatch({
