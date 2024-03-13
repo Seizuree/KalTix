@@ -1,6 +1,6 @@
 import type { Command, FetchURLOptions } from '@nxweb/core';
 
-import { getGenre, getProducts  } from '@api/clients/products.js';
+import { getGenre, getProducts } from '@api/clients/products.js';
 import type { RootModel } from '@models/types.js';
 
 import { ProductsActionType } from './types.js';

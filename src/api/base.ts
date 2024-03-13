@@ -3,14 +3,15 @@ import type { FetchURLOptions } from '@nxweb/core';
 
 import { apiMock } from './mock.js';
 
-export const apiURL = (endpoint: string, options: Readonly<FetchURLOptions> = {}) => {
-  console.log('asdvasd', window.NX?.env.apiURL)
-
+export const apiURL = (
+  endpoint: string,
+  options: Readonly<FetchURLOptions> = {}
+) => {
   return createFetchURL(
     endpoint,
     compact({
-      baseURL: window.NX?.env.apiURL,
-      ...options
+      ...options,
+      baseURL: window.NX?.env.apiURL
     })
   );
 };
@@ -22,7 +23,8 @@ export const API = (mocked: boolean = false) => {
     },
     headers: compact({
       accept: 'application/json',
-      authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NmRmM2Y3NmY4ZGIyYjdhOTgyN2ZlOWU2ZDZjMTg3YiIsInN1YiI6IjY1ZjEyMTM2ZWVhMzRkMDE4ODEyZmZlZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ij3JUU2c44YT7FPI00Qy8L2Dta61tCbhpCnNgBl9BFU'
+      authorization:
+        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NmRmM2Y3NmY4ZGIyYjdhOTgyN2ZlOWU2ZDZjMTg3YiIsInN1YiI6IjY1ZjEyMTM2ZWVhMzRkMDE4ODEyZmZlZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ij3JUU2c44YT7FPI00Qy8L2Dta61tCbhpCnNgBl9BFU'
     })
   });
 
