@@ -9,8 +9,14 @@ interface Product {
   title: string
 }
 
+interface Genre {
+  id: number
+  name: string
+}
+
 // Page Model
 interface ProductsModel {
+  genres?: Genre[]
   products?: Product[]
 }
 
@@ -27,4 +33,4 @@ type ProductsAction = {
 };
 
 export { ProductsActionType };
-export type { ProductsModel, ProductsAction, Product };
+export type { ProductsModel, ProductsAction, Product, Genre };

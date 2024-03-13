@@ -15,7 +15,7 @@ export const navigation: readonly HorizontalNavItemsType[] = [
   {
     icon: <Movie />,
     id: 'products',
-    link: '/movies',
+    link: '/products',
     text: 'Movies'
   }
   /*
