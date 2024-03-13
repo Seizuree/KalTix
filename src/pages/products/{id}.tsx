@@ -1,9 +1,10 @@
+/* eslint-disable react/button-has-type */
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { Box, Chip, styled, Typography } from '@components/material.js';
+import { Box, Button, Chip, styled, Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 const Product: PageComponent = () => {
@@ -50,6 +51,12 @@ const Product: PageComponent = () => {
     });
   }, [product, state]);
 
+  const handleDetail = () => {
+    if (product) {
+      dispatch(command.products.create(product));
+    }
+  };
+
   return (
     <>
       <Box
@@ -84,6 +91,7 @@ const Product: PageComponent = () => {
       <div>{product?.title}</div>
       {genreNames}
       <pre>{product ? JSON.stringify(product, null, 2) : null}</pre>
+      <Button onClick={handleDetail}>Check</Button>
     </>
   );
 };

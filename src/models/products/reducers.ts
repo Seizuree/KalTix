@@ -1,6 +1,6 @@
 import { ProductsActionType } from './types.js';
 
-import type { ProductsAction, ProductsModel } from './types.js';
+import type { ProductBooked, ProductsAction, ProductsModel } from './types.js';
 
 const productsReducer = (
   state: ProductsModel = {},
@@ -17,4 +17,19 @@ const productsReducer = (
   }
 };
 
-export { productsReducer };
+const productBookedReducer = (
+  state: ProductBooked = {},
+  action: Readonly<ProductsAction>
+): ProductBooked => {
+  switch (action.type) {
+    case ProductsActionType.Create:
+      return { ...state, ...action.value };
+    case ProductsActionType.Clear:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export { productsReducer, productBookedReducer };
