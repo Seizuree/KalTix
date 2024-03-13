@@ -1,5 +1,5 @@
 export const app = {
-  name: 'App Name',
+  name: 'KalTix',
   title: 'App Title',
   url: '/',
 

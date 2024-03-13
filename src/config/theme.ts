@@ -54,10 +54,10 @@ export const config: ThemeConfig = {
   contentWidth: 'boxed' /* full | boxed */,
   direction: 'ltr' /* ltr | rtl */,
   footer: 'static' /* fixed | static | hidden */,
-  layout: 'vertical' /* vertical | horizontal */,
+  layout: 'horizontal' /* vertical | horizontal */,
   mode: 'light' as Mode /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
   skin: 'default' /* default | bordered */,
-  templateName: 'Vuexy' /* App Name */,
+  templateName: 'KalTix' /* App Name */,
 
   // ** Routing Configs
   routingLoader: true /* true | false */,

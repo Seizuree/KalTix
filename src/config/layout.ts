@@ -10,7 +10,7 @@ import { VerticalLayout } from '@layouts/vertical-layout.js';
 const layouts = new LayoutRegistry({
   appbar: BlankLayoutWithAppBar,
   blank: BlankLayout,
-  default: VerticalLayout as Layout,
+  default: HorizontalLayout as Layout,
   horizontal: HorizontalLayout as Layout,
   vertical: VerticalLayout as Layout
 });
