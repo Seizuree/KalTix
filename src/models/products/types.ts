@@ -21,7 +21,7 @@ interface ProductsModel {
 }
 
 interface ProductBooked {
-  products?: Product[]
+  productBooked?: Product[]
 }
 
 enum ProductsActionType {

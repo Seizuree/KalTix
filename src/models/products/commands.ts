@@ -6,7 +6,7 @@ import type { RootModel } from '@models/types.js';
 
 import { ProductsActionType } from './types.js';
 
-import type { Product, ProductsAction, ProductsModel } from './types.js';
+import type { Product, ProductBooked, ProductsAction, ProductsModel } from './types.js';
 
 const productsCommand = {
   clear: (): ProductsAction => {
@@ -37,15 +37,24 @@ const productsCommand = {
         console.error(err);
       }
     };
-  },
+  }
+} satisfies Command<RootModel, ProductsAction>;
+
+const bookedCommand = {
   create: (product: Product) => {
     return (dispatch) => {
-      dispatch({
-        type: ProductsActionType.Create,
-        product
-      });
+      if (product) {
+        const value: ProductBooked = {
+          productBooked: [product]
+        };
+
+        dispatch({
+          type: ProductsActionType.Create,
+          value
+        });
+      }
     };
   }
 } satisfies Command<RootModel, ProductsAction>;
 
-export { productsCommand };
+export { productsCommand, bookedCommand };

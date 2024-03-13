@@ -10,6 +10,9 @@ import { useCommand, useStore } from '@models/store.js';
 const Product: PageComponent = () => {
   const { id } = useParams();
   const [state, dispatch] = useStore((store) => store.products);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [stateBooked, dispatchBooked] = useStore((store) => store.booked);
+
   const command = useCommand((cmd) => cmd);
 
   const product = useMemo(
@@ -22,9 +25,9 @@ const Product: PageComponent = () => {
       console.error(err);
     });
 
-    return () => {
-      dispatch(command.products.clear());
-    };
+    // return () => {
+    //   dispatch(command.products.clear());
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,9 +55,9 @@ const Product: PageComponent = () => {
   }, [product, state]);
 
   const handleDetail = () => {
-    if (product) {
-      dispatch(command.products.create(product));
-    }
+    if (!product) return {};
+
+    dispatchBooked(command.booked.create(product));
   };
 
   return (
