@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { DotsVertical } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
+import { apiURL } from '@api/base';
 import { IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
@@ -31,11 +32,15 @@ const Products: PageComponent = () => {
     navigate(`/products/${id}`);
   };
 
+  // const asdv = ;
+
   useEffect(() => {
-    dispatch(command.products.load(''))
+    dispatch(command.products.load())
       .catch((err: unknown) => {
         console.error(err);
       });
+
+      
 
     return () => {
       dispatch(command.products.clear());
@@ -69,7 +74,7 @@ const Products: PageComponent = () => {
                   {row.id}
                 </TableCell>
                 <TableCell>{row.title}</TableCell>
-                <TableCell>{row.description}</TableCell>
+                <TableCell>{row.overview}</TableCell>
                 <TableCell align="center">
                   <IconButton onClick={(e) => handleClick(e, row.id)}>
                     <DotsVertical />

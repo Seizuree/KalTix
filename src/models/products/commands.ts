@@ -1,6 +1,6 @@
 import type { Command, FetchURLOptions } from '@nxweb/core';
 
-import { getProducts  } from '@api/clients/products.js';
+import { getGenre, getProducts  } from '@api/clients/products.js';
 import type { RootModel } from '@models/types.js';
 
 import { ProductsActionType } from './types.js';
@@ -13,14 +13,18 @@ const productsCommand = {
       type: ProductsActionType.Clear
     };
   },
-  load: (token: string, options?: Readonly<FetchURLOptions>) => {
+  load: (options?: Readonly<FetchURLOptions>) => {
     return async (dispatch) => {
       try {
-        const res = await getProducts(token, options);
+        const [products, genres] = await Promise.all([
+          getProducts(options),
+          getGenre()
+        ]);
 
-        if (res) {
+        if (products) {
           const value: ProductsModel = {
-            products: res
+            genres,
+            products
           };
 
           dispatch({

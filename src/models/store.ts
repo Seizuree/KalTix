@@ -1,8 +1,9 @@
+import { combineReducers, createStore } from '@nxweb/core';
 import {
-  combineReducers, createStore
-} from '@nxweb/core';
-import {
-  createCommandHook, createDispatchHook, createStoreHook, createStoreProvider
+  createCommandHook,
+  createDispatchHook,
+  createStoreHook,
+  createStoreProvider
 } from '@nxweb/react';
 
 import { productsCommand } from './products/commands.js';

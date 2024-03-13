@@ -80,11 +80,11 @@ const UserDropdown: FC<Props> = ({ settings }) => {
         sx={{ cursor: 'pointer', ml: 2 }}
         onClick={handleDropdownOpen}
       >
-        <Avatar
+        {/* <Avatar
           alt="John Doe"
           src="/images/avatars/1.png"
           sx={{ height: 38, width: 38 }}
-          onClick={handleDropdownOpen} />
+          onClick={handleDropdownOpen} /> */}
       </Badge>
       <Menu
         anchorEl={anchorEl}
