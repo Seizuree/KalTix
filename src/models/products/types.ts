@@ -5,6 +5,7 @@ interface Product {
   overview: string
   poster_path: string
   release_date: string
+  seats: string[]
   title: string
 }
 
