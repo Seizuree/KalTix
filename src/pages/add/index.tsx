@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -15,6 +16,7 @@ import {
   TextField
 } from '@mui/material';
 
+import { Send } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import { useCommand, useStore } from '@models/store';
@@ -30,13 +32,51 @@ const AddMovie: PageComponent = () => {
   }, []);
   const genres = useStore((store) => store.products?.genres)[0];
   const [genreName, setGenreName] = useState<string[]>([]);
+  const [newTitle, setNewTitle] = useState<string>('');
+  const [newOverview, setNewOverview] = useState<string>('');
+  const [newGenreId, setNewGenreId] = useState<number[]>([]);
+  const [newPosterPath, setNewPosterPath] = useState<string>('');
 
-  const handleChange = (event: SelectChangeEvent<typeof genreName>) => {
+  const handleGenreChange = (event: SelectChangeEvent<typeof genreName>) => {
     const {
       target: { value }
     } = event;
 
     setGenreName(typeof value === 'string' ? value.split(',') : value);
+
+    if (genres) {
+      const selectedGenreIds = genres
+        .filter((g) => value.includes(g.name))
+        .map((g) => g.id);
+
+      setNewGenreId(selectedGenreIds);
+    }
+  };
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(event.target.value);
+  };
+
+  const handleOverviewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewOverview(event.target.value);
+  };
+
+  const handlePosterPathChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewPosterPath(event.target.value);
+  };
+
+  const handleAddButton = () => {
+    dispatch(
+      command.products.create({
+        genre_ids: newGenreId,
+        id: 1000,
+        overview: newOverview,
+        poster_path: newPosterPath,
+        title: newTitle
+      })
+    );
   };
 
   return (
@@ -48,14 +88,16 @@ const AddMovie: PageComponent = () => {
             <Grid item={true} sm={6} xs={12}>
               <TextField
                 fullWidth={true}
-                label="Movie Name"
-                placeholder="The Avengers" />
+                label="Movie Title"
+                placeholder="The Avengers"
+                onChange={handleTitleChange} />
             </Grid>
             <Grid item={true} sm={6} xs={12}>
               <TextField
                 fullWidth={true}
                 label="Movie Overview"
-                placeholder="The quick brown fox jumps over the lazy dog" />
+                placeholder="The quick brown fox jumps over the lazy dog"
+                onChange={handleOverviewChange} />
             </Grid>
             <Grid item={true} sm={6} xs={12}>
               <InputLabel id="genre-checkbox-label">Genre</InputLabel>
@@ -67,7 +109,7 @@ const AddMovie: PageComponent = () => {
                 multiple={true}
                 renderValue={(selected) => selected.join(', ')}
                 value={genreName}
-                onChange={handleChange}
+                onChange={handleGenreChange}
               >
                 {!genres
                   ? <div>Loading</div>
@@ -78,6 +120,25 @@ const AddMovie: PageComponent = () => {
                     </MenuItem>
                   ))}
               </Select>
+            </Grid>
+            {/* <Grid item={true} sm={6} xs={12}>
+              <DefaultDatePicker popperPlacement={popperPlacement} />
+            </Grid> */}
+            <Grid item={true} mt={2} xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Poster Path"
+                placeholder="The quick brown fox jumps over the lazy dog"
+                onChange={handlePosterPathChange} />
+            </Grid>
+            <Grid item={true} mt={2} xs={12}>
+              <Button
+                endIcon={<Send />}
+                variant="contained"
+                onClick={handleAddButton}
+              >
+                Add Movies
+              </Button>
             </Grid>
           </Grid>
         </form>
