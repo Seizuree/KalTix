@@ -1,14 +1,18 @@
+/* eslint-disable react/button-has-type */
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { Box, Chip, styled, Typography } from '@components/material.js';
+import { Box, Button, Chip, styled, Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 const Product: PageComponent = () => {
   const { id } = useParams();
   const [state, dispatch] = useStore((store) => store.products);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [stateBooked, dispatchBooked] = useStore((store) => store.booking);
+
   const command = useCommand((cmd) => cmd);
 
   const product = useMemo(
@@ -21,9 +25,11 @@ const Product: PageComponent = () => {
       console.error(err);
     });
 
-    return () => {
-      dispatch(command.products.clear());
-    };
+    /*
+     * Return () => {
+     *   dispatch(command.products.clear());
+     * };
+     */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,6 +55,11 @@ const Product: PageComponent = () => {
       return [];
     });
   }, [product, state]);
+
+  const handleBooking = () => {
+    if (!product) return;
+    dispatchBooked(command.booking.create(product));
+  };
 
   return (
     <>
@@ -84,6 +95,7 @@ const Product: PageComponent = () => {
       <div>{product?.title}</div>
       {genreNames}
       <pre>{product ? JSON.stringify(product, null, 2) : null}</pre>
+      <Button onClick={handleBooking}>Book Ticket</Button>
     </>
   );
 };

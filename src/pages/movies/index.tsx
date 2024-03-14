@@ -40,7 +40,7 @@ const Products: PageComponent = () => {
   };
 
   const handleDetail = () => {
-    navigate(`/products/${id}`);
+    navigate(`/movies/${id}`);
   };
 
   useEffect(() => {
@@ -48,9 +48,9 @@ const Products: PageComponent = () => {
       console.error(err);
     });
 
-    return () => {
-      dispatch(command.products.clear());
-    };
+    // return () => {
+    //   dispatch(command.products.clear());
+    // };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

@@ -1,6 +1,9 @@
 import { ProductsActionType } from './types.js';
 
-import type { ProductsAction, ProductsModel } from './types.js';
+import type {
+  ProductsAction,
+  ProductsModel
+} from './types.js';
 
 const productsReducer = (
   state: ProductsModel = {},
