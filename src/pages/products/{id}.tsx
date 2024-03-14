@@ -11,7 +11,7 @@ const Product: PageComponent = () => {
   const { id } = useParams();
   const [state, dispatch] = useStore((store) => store.products);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [stateBooked, dispatchBooked] = useStore((store) => store.booked);
+  const [stateBooked, dispatchBooked] = useStore((store) => store.booking);
 
   const command = useCommand((cmd) => cmd);
 
@@ -25,9 +25,11 @@ const Product: PageComponent = () => {
       console.error(err);
     });
 
-    // return () => {
-    //   dispatch(command.products.clear());
-    // };
+    /*
+     * Return () => {
+     *   dispatch(command.products.clear());
+     * };
+     */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -56,7 +58,7 @@ const Product: PageComponent = () => {
 
   const handleBooking = () => {
     if (!product) return;
-    dispatchBooked(command.booked.create(product));
+    dispatchBooked(command.booking.create(product));
   };
 
   return (

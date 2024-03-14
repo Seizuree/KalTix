@@ -20,25 +20,17 @@ interface ProductsModel {
   products?: Product[]
 }
 
-interface ProductBooked {
-  booked?: Product[]
-}
-
 enum ProductsActionType {
   Load = 'products-load',
-  Clear = 'products-clear',
-  Create = 'products-create'
+  Clear = 'products-clear'
 }
 
 type ProductsAction = {
   type: ProductsActionType.Clear
-} | {
-  type: ProductsActionType.Create
-  value?: ProductBooked
 } | {
   type: ProductsActionType.Load
   value?: ProductsModel
 };
 
 export { ProductsActionType };
-export type { ProductsModel, ProductsAction, Product, Genre, ProductBooked };
+export type { ProductsModel, ProductsAction, Product, Genre };

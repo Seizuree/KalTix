@@ -1,7 +1,8 @@
-import type { ProductBooked, ProductsAction, ProductsModel } from './products/types';
+import type { BookingModel } from './booked/types';
+import type { ProductsAction, ProductsModel } from './products/types';
 
 export interface RootModel {
-  booked?: ProductBooked
+  booking?: BookingModel
   products?: ProductsModel
 }
 
