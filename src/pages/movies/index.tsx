@@ -40,7 +40,7 @@ const Products: PageComponent = () => {
   };
 
   const handleDetail = () => {
-    navigate(`/products/${id}`);
+    navigate(`/movies/${id}`);
   };
 
   useEffect(() => {
