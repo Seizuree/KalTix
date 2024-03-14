@@ -1,11 +1,9 @@
 interface Product {
-  backdrop_path: string
   genre_ids: number[]
   id: number
   overview: string
   poster_path: string
   release_date: string
-  seats: string[]
   title: string
 }
 
@@ -22,11 +20,15 @@ interface ProductsModel {
 
 enum ProductsActionType {
   Load = 'products-load',
-  Clear = 'products-clear'
+  Clear = 'products-clear',
+  Create = 'products-create'
 }
 
 type ProductsAction = {
   type: ProductsActionType.Clear
+} | {
+  type: ProductsActionType.Create
+  value?: ProductsModel
 } | {
   type: ProductsActionType.Load
   value?: ProductsModel

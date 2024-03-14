@@ -6,10 +6,7 @@ import type { RootModel } from '@models/types.js';
 
 import { ProductsActionType } from './types.js';
 
-import type {
-  ProductsAction,
-  ProductsModel
-} from './types.js';
+import type { Product, ProductsAction, ProductsModel } from './types.js';
 
 const productsCommand = {
   clear: (): ProductsAction => {
@@ -38,6 +35,20 @@ const productsCommand = {
         }
       } catch (err) {
         console.error(err);
+      }
+    };
+  },
+  create: (product: Product) => {
+    return (dispatch) => {
+      if (product) {
+        const value: ProductsModel = {
+          products: [product]
+        };
+
+        dispatch({
+          type: ProductsActionType.Create,
+          value
+        });
       }
     };
   }
