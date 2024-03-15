@@ -1,11 +1,9 @@
 interface Product {
-  backdrop_path: string
   genre_ids: number[]
   id: number
   overview: string
   poster_path: string
   release_date: string
-  seats: string[]
   title: string
 }
 
