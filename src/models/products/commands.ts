@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import type { Command, FetchURLOptions } from '@nxweb/core';
 
 import { getGenre, getProducts } from '@api/clients/products.js';
