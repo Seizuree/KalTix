@@ -13,6 +13,20 @@ const productsCommand = {
       type: ProductsActionType.Clear
     };
   },
+  create: (product: Product) => {
+    return (dispatch) => {
+      if (product) {
+        const value: ProductsModel = {
+          products: [product]
+        };
+
+        dispatch({
+          type: ProductsActionType.Create,
+          value
+        });
+      }
+    };
+  },
   load: (options?: Readonly<FetchURLOptions>) => {
     return async (dispatch) => {
       try {
@@ -34,20 +48,6 @@ const productsCommand = {
         }
       } catch (err) {
         console.error(err);
-      }
-    };
-  },
-  create: (product: Product) => {
-    return (dispatch) => {
-      if (product) {
-        const value: ProductsModel = {
-          products: [product]
-        };
-
-        dispatch({
-          type: ProductsActionType.Create,
-          value
-        });
       }
     };
   }
