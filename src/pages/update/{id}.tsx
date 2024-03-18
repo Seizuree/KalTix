@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable capitalized-comments */
-/* eslint-disable no-unsafe-optional-chaining */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import {
   Button,
@@ -31,40 +30,60 @@ import type { PageComponent } from '@nxweb/react';
 import { useCommand, useStore } from '@models/store';
 
 import type { SelectChangeEvent } from '@mui/material';
+import type { Dayjs } from 'dayjs';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const AddMovie: PageComponent = () => {
+const UpdateMovie: PageComponent = () => {
+  const { id } = useParams();
   const [state, dispatch] = useStore((store) => store.products);
   const command = useCommand((cmd) => cmd);
 
   useEffect(() => {
     dispatch(command.products.load());
   }, []);
+
+  const currentMovie = useMemo(
+    () => state?.products?.find((current) => current.id?.toString() === id),
+    [state, id]
+  );
   const genres = useStore((store) => store.products?.genres)[0];
   const [genreName, setGenreName] = useState<string[]>([]);
   const [newTitle, setNewTitle] = useState<string>('');
   const [newOverview, setNewOverview] = useState<string>('');
   const [newGenreId, setNewGenreId] = useState<number[]>([]);
   const [newPosterPath, setNewPosterPath] = useState<string>('');
-  const [newReleaseDate, setNewReleaseDate] = useState<Date | null>(null);
+  const [newReleaseDate, setNewReleaseDate] = useState<Dayjs | null>(dayjs(new Date()));
 
-  const handleGenreChange = (event: SelectChangeEvent<typeof genreName>) => {
-    const {
-      target: { value }
-    } = event;
+  const genreNames = useMemo(() => {
+    if (!currentMovie || !state || !state.genres) return [];
 
-    setGenreName(typeof value === 'string' ? value.split(',') : value);
+    return currentMovie.genre_ids.map((genreId: number) => {
+      if (state.genres) {
+        const genre = state.genres.find((g) => g.id === genreId);
 
-    if (genres) {
-      const selectedGenreIds = genres
-        .filter((g) => value.includes(g.name))
-        .map((g) => g.id);
+        return genre ? genre.name : 'Unknown';
+      }
 
-      setNewGenreId(selectedGenreIds);
+      return '';
+    });
+  }, [currentMovie, state]);
+
+  useEffect(() => {
+    if (currentMovie !== undefined) {
+      setTimeout(() => {
+        const currentDate = dayjs(currentMovie.release_date);
+
+        setNewTitle(currentMovie.title);
+        setNewOverview(currentMovie.overview);
+        setNewGenreId(currentMovie.genre_ids);
+        setGenreName(genreNames);
+        setNewPosterPath(currentMovie.poster_path);
+        setNewReleaseDate(currentDate);
+      }, 1000);
     }
-  };
+  }, [currentMovie]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.target.value);
@@ -88,22 +107,40 @@ const AddMovie: PageComponent = () => {
       .padStart(2, '0')}`;
   };
 
-  const handleAddButton = () => {
-    dispatch(
-      command.products.create({
-        genre_ids: newGenreId,
-        id: Math.floor(Math.random() * 9999999) + 1,
-        overview: newOverview,
-        poster_path: newPosterPath,
-        release_date: handleDateChange(),
-        title: newTitle
-      })
-    );
+  const handleGenreChange = (event: SelectChangeEvent<typeof genreName>) => {
+    const {
+      target: { value }
+    } = event;
+
+    setGenreName(typeof value === 'string' ? value.split(',') : value);
+
+    if (genres) {
+      const selectedGenreIds = genres
+        .filter((g) => value.includes(g.name))
+        .map((g) => g.id);
+
+      setNewGenreId(selectedGenreIds);
+    }
+  };
+
+  const handleUpdateButton = () => {
+    if (currentMovie) {
+      dispatch(
+        command.products.update({
+          genre_ids: newGenreId,
+          id: currentMovie.id,
+          overview: newOverview,
+          poster_path: newPosterPath,
+          release_date: handleDateChange(),
+          title: newTitle
+        })
+      );
+    }
   };
 
   return (
     <Card>
-      <CardHeader title="Add New Movie" />
+      <CardHeader title="Update Movie" />
       <CardContent>
         <form>
           <Grid container={true} spacing={5}>
@@ -112,6 +149,7 @@ const AddMovie: PageComponent = () => {
                 fullWidth={true}
                 label="Movie Title"
                 placeholder="The Avengers"
+                value={newTitle}
                 onChange={handleTitleChange} />
             </Grid>
             <Grid item={true} sm={6} xs={12}>
@@ -119,6 +157,7 @@ const AddMovie: PageComponent = () => {
                 fullWidth={true}
                 label="Movie Overview"
                 placeholder="The quick brown fox jumps over the lazy dog"
+                value={newOverview}
                 onChange={handleOverviewChange} />
             </Grid>
             <Grid item={true} sm={6} xs={12}>
@@ -136,7 +175,7 @@ const AddMovie: PageComponent = () => {
                 {!genres
                   ? <div>Loading</div>
                   : genres.map((data) => (
-                    <MenuItem key={data.id} value={data.name}>
+                    <MenuItem key={data.name} value={data.name}>
                       <Checkbox checked={genreName.indexOf(data.name) > -1} />
                       <ListItemText primary={data.name} />
                     </MenuItem>
@@ -153,7 +192,7 @@ const AddMovie: PageComponent = () => {
                     timezone="Asia/Jakarta"
                     value={newReleaseDate}
                     onChange={(date) => {
-                      setNewReleaseDate(date);
+                      setNewReleaseDate(dayjs(date));
                     }} />
                 </DemoContainer>
               </LocalizationProvider>
@@ -163,15 +202,16 @@ const AddMovie: PageComponent = () => {
                 fullWidth={true}
                 label="Poster Path"
                 placeholder="The quick brown fox jumps over the lazy dog"
+                value={newPosterPath}
                 onChange={handlePosterPathChange} />
             </Grid>
             <Grid item={true} mt={2} xs={12}>
               <Button
                 endIcon={<Send />}
                 variant="contained"
-                onClick={handleAddButton}
+                onClick={handleUpdateButton}
               >
-                Add Movies
+                Update Movies
               </Button>
             </Grid>
           </Grid>
@@ -181,6 +221,6 @@ const AddMovie: PageComponent = () => {
   );
 };
 
-AddMovie.displayName = 'Add Movie';
+UpdateMovie.displayName = 'Add Movie';
 
-export default AddMovie;
+export default UpdateMovie;
