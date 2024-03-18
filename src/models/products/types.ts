@@ -1,5 +1,5 @@
 interface Product {
-  backdrop_path: string
+  backdrop_path?: string
   genre_ids: number[]
   genres: {
     id: number
@@ -11,7 +11,6 @@ interface Product {
   poster_path: string
   release_date: string
   runtime?: number
-  seats: string[]
   tagline?: string
   title: string
 }
@@ -35,18 +34,20 @@ interface ProductDetailModel {
 enum ProductsActionType {
   Load = 'products-load',
   Clear = 'products-clear',
-  Detail = 'products-detail'
+  Detail = 'products-detail',
+  Create = 'products-create'
 }
 
 type ProductsAction =
-  | {
+  {
     type: ProductsActionType.Clear
-  }
-  | {
+  } | {
+    type: ProductsActionType.Create
+    value?: ProductsModel
+  } | {
     type: ProductsActionType.Detail
     value?: ProductDetailModel
-  }
-  | {
+  } | {
     type: ProductsActionType.Load
     value?: ProductsModel
   };
