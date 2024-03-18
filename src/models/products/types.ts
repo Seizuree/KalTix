@@ -3,7 +3,7 @@ interface Product {
   id: number
   overview: string
   poster_path: string
-  release_date?: string
+  release_date: string
   title: string
 }
 
@@ -21,7 +21,8 @@ interface ProductsModel {
 enum ProductsActionType {
   Load = 'products-load',
   Clear = 'products-clear',
-  Create = 'products-create'
+  Create = 'products-create',
+  Update = 'products-update'
 }
 
 type ProductsAction = {
@@ -31,6 +32,9 @@ type ProductsAction = {
   value?: ProductsModel
 } | {
   type: ProductsActionType.Load
+  value?: ProductsModel
+} | {
+  type: ProductsActionType.Update
   value?: ProductsModel
 };
 
