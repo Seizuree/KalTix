@@ -2,19 +2,23 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useKeenSlider } from 'keen-slider/react';
+
 import type { PageComponent } from '@nxweb/react';
 
-import { Box, Button, Chip, styled, Typography } from '@components/material.js';
+import { Box, Chip, styled, Typography } from '@components/material.js';
+import { useSettings } from '@hooks/use-settings';
 import { useCommand, useStore } from '@models/store.js';
+
+import Recommendations from './recommendations';
 
 const Product: PageComponent = () => {
   const { id } = useParams();
   const [state, dispatch] = useStore((store) => store.products);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [stateBooked, dispatchBooked] = useStore((store) => store.booking);
+  const [stateDetail, dispatchDetail] = useStore((store) => store.detail);
 
   const command = useCommand((cmd) => cmd);
-
   const product = useMemo(
     () => state?.products?.find((o) => o.id.toString() === id),
     [state, id]
@@ -25,6 +29,11 @@ const Product: PageComponent = () => {
       console.error(err);
     });
 
+    if (id) {
+      dispatchDetail(command.products.detail(id)).catch((err: unknown) => {
+        console.error(err);
+      });
+    }
     /*
      * Return () => {
      *   dispatch(command.products.clear());
@@ -55,11 +64,14 @@ const Product: PageComponent = () => {
       return [];
     });
   }, [product, state]);
+  const {
+    settings: { direction }
+  } = useSettings();
 
-  const handleBooking = () => {
-    if (!product) return;
-    dispatchBooked(command.booking.create(product));
-  };
+  const [ref] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    rtl: direction === 'rtl'
+  });
 
   return (
     <>
@@ -71,10 +83,7 @@ const Product: PageComponent = () => {
           gap: '1rem'
         }}
       >
-        <Img
-          alt={product?.title}
-          height="500"
-          src={`https://image.tmdb.org/t/p/original/${product?.poster_path}`} />
+        <Img alt={product?.title} height="400" src={product?.poster_path} />
         <Box
           sx={{
             alignItems: 'start',
@@ -84,18 +93,28 @@ const Product: PageComponent = () => {
           }}
         >
           <h1 css={{ alignItems: 'center', display: 'flex', gap: '1rem' }}>
-            {product?.title}
+            {' '}
+            {product?.title} ({product?.release_date}){' '}
           </h1>
-          <Typography>Genre</Typography>
           <Box sx={{ display: 'flex', gap: '1rem' }}>
             {genreNames.map((genreName, index) => <Chip key={product?.genre_ids[index]} label={genreName} />)}
           </Box>
+          <Typography>{product?.overview}</Typography>
         </Box>
       </Box>
-      <div>{product?.title}</div>
-      {genreNames}
-      <pre>{product ? JSON.stringify(product, null, 2) : null}</pre>
-      <Button onClick={handleBooking}>Book Ticket</Button>
+      <Box
+        className="keen-slider"
+        ref={ref}
+        sx={{
+          alignItems: 'start',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrapL: 'wrap',
+          gap: '1rem'
+        }}
+      >
+      {stateDetail?.recommendations?.map((product) => <Box className="keen-slider__slide" key={product.id} ><Recommendations  recommendations={product} /> </Box>)}
+      </Box>
     </>
   );
 };
