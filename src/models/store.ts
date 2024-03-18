@@ -6,6 +6,8 @@ import {
   createStoreProvider
 } from '@nxweb/react';
 
+import { bookingCommand } from './booked/commands.js';
+import { BookingReducer } from './booked/reducers.js';
 import { productsCommand } from './products/commands.js';
 import { productsReducer } from './products/reducers.js';
 
@@ -13,16 +15,19 @@ import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
+  booking: BookingReducer,
   products: productsReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
+  booking: {},
   products: {}
 };
 
 // ** Init commands
 const rootCommand = {
+  booking: bookingCommand,
   products: productsCommand
 };
 

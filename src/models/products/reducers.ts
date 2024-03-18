@@ -12,6 +12,7 @@ const productsReducer = (
   let newProducts: Product[] = [];
   switch (action.type) {
     case ProductsActionType.Load:
+
       if (!state.products) {
         return { ...action.value };
       }
@@ -20,34 +21,14 @@ const productsReducer = (
     case ProductsActionType.Clear:
       return {};
     case ProductsActionType.Create:
-      // newProducts = action.value?.products ?? [];
-
-      // return {
-      //   ...state,
-      //   products: state.products
-      //     ? [...state.products, ...newProducts]
-      //     : newProducts
-      // };
-
       newProducts = action.value?.products ?? [];
 
-      const newState = {
+      return {
         ...state,
         products: state.products
           ? [...state.products, ...newProducts]
           : newProducts
       };
-
-      // Update localStorage
-      const stateCopy: Product[] = [...newState.products, ...newProducts];
-
-      localStorage.setItem('students', JSON.stringify(stateCopy));
-      const storedData = localStorage.getItem('students');
-
-      // eslint-disable-next-line no-console
-      console.log(storedData);
-
-      return newState;
 
     default:
       return state;

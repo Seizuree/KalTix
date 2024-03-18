@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { Box, Chip, styled, Typography } from '@components/material.js';
+import { Box, Button, Chip, styled, Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 const Product: PageComponent = () => {
