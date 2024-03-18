@@ -1,16 +1,24 @@
-/* eslint-disable react/button-has-type */
-import { useEffect, useMemo } from 'react';
+/* eslint-disable react/no-array-index-key */
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useKeenSlider } from 'keen-slider/react';
-
+import {
+  Bookmark,
+  BookmarkFilled,
+  Heart,
+  HeartFilled,
+  Pencil,
+  Star,
+  StarFilled,
+  Trash
+} from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
-import { Box, Chip, styled, Typography } from '@components/material.js';
+import { Box, Button, Chip, styled, Typography } from '@components/material.js';
 import { useSettings } from '@hooks/use-settings';
 import { useCommand, useStore } from '@models/store.js';
 
-import Recommendations from './recommendations';
+import Recommendations from '../../components/movies/recommendations';
 
 const Product: PageComponent = () => {
   const { id } = useParams();
@@ -19,10 +27,12 @@ const Product: PageComponent = () => {
   const [stateDetail, dispatchDetail] = useStore((store) => store.detail);
 
   const command = useCommand((cmd) => cmd);
-  const product = useMemo(
-    () => state?.products?.find((o) => o.id.toString() === id),
-    [state, id]
-  );
+  const product = useMemo(() => stateDetail?.detail, [stateDetail]);
+
+  const [heartFilled, setHeartFilled] = useState(false);
+  const [starFilled, setStarFilled] = useState(false);
+  const [bookmarkFilled, setBookmarkFilled] = useState(false);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     dispatch(command.products.load()).catch((err: unknown) => {
@@ -30,15 +40,14 @@ const Product: PageComponent = () => {
     });
 
     if (id) {
-      dispatchDetail(command.products.detail(id)).catch((err: unknown) => {
-        console.error(err);
-      });
+      dispatchDetail(command.products.detail(id))
+        .catch((err: unknown) => {
+          console.error(err);
+        })
+        .finally(() => {
+          setLoad(true);
+        });
     }
-    /*
-     * Return () => {
-     *   dispatch(command.products.clear());
-     * };
-     */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,9 +63,9 @@ const Product: PageComponent = () => {
   const genreNames = useMemo(() => {
     if (!product || !state || !state.genres) return [];
 
-    return product.genre_ids.map((genreId: number) => {
+    return product.genres.map((genreId) => {
       if (state.genres) {
-        const genre = state.genres.find((g) => g.id === genreId);
+        const genre = state.genres.find((g) => g.id === genreId.id);
 
         return genre ? genre.name : 'Unknown';
       }
@@ -64,57 +73,131 @@ const Product: PageComponent = () => {
       return [];
     });
   }, [product, state]);
+
+  const duration = Math.floor((product?.runtime ?? 0) / 60);
+  const minutes = (product?.runtime ?? 0) % 60;
+
   const {
     settings: { direction }
   } = useSettings();
 
-  const [ref] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    rtl: direction === 'rtl'
-  });
-
   return (
     <>
-      <Box
-        sx={{
-          alignItems: 'start',
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '1rem'
-        }}
-      >
-        <Img alt={product?.title} height="400" src={product?.poster_path} />
-        <Box
-          sx={{
-            alignItems: 'start',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem'
-          }}
-        >
-          <h1 css={{ alignItems: 'center', display: 'flex', gap: '1rem' }}>
-            {' '}
-            {product?.title} ({product?.release_date}){' '}
-          </h1>
-          <Box sx={{ display: 'flex', gap: '1rem' }}>
-            {genreNames.map((genreName, index) => <Chip key={product?.genre_ids[index]} label={genreName} />)}
+      {load
+        ? (
+        <>
+          <Box
+            sx={{
+              alignItems: 'start',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '3rem',
+              margin: '3rem 1rem'
+            }}
+          >
+            <Img
+              alt={product?.title}
+              height="400"
+              src={
+                product?.poster_path.startsWith('/')
+                  ? `https://image.tmdb.org/t/p/original/${product?.poster_path}`
+                  : product?.poster_path
+              }
+              sx={{ borderRadius: '10px' }} />
+            <Box
+              sx={{
+                alignItems: 'start',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2rem'
+              }}
+            >
+              <Typography sx={{ fontWeight: 'bold' }} variant="h1">
+                {product?.title} ({product?.release_date.slice(0, 4)})
+              </Typography>
+              <Typography variant="h6">
+                {product?.release_date} ({product?.original_language}) &#xb7; {duration} h {minutes} m
+              </Typography>
+              <Box sx={{ display: 'flex', gap: '1rem' }}>
+                {genreNames.map((genreName, index) => (
+                  <div key={index}>
+                    <Chip label={genreName} />
+                  </div>
+                ))}
+              </Box>
+              <Box sx={{ display: 'flex', gap: '1rem' }}>
+                <Box
+                  sx={{
+                    bgcolor: '#00AF7B',
+                    borderRadius: '2rem',
+                    cursor: 'pointer',
+                    padding: '15px 15px 8px 15px'
+                  }}
+                >
+                  {heartFilled
+                    ? <HeartFilled onClick={() => setHeartFilled(false)} />
+                    : <Heart onClick={() => setHeartFilled(true)} />}
+                </Box>
+                <Box
+                  sx={{
+                    bgcolor: '#00AF7B',
+                    borderRadius: '2rem',
+                    cursor: 'pointer',
+                    padding: '15px 15px 8px 15px'
+                  }}
+                >
+                  {starFilled
+                    ? <StarFilled onClick={() => setStarFilled(false)} />
+                    : <Star onClick={() => setStarFilled(true)} />}
+                </Box>
+                <Box
+                  sx={{
+                    bgcolor: '#00AF7B',
+                    borderRadius: '2rem',
+                    cursor: 'pointer',
+                    padding: '15px 15px 8px 15px'
+                  }}
+                >
+                  {bookmarkFilled
+                    ? <BookmarkFilled onClick={() => setBookmarkFilled(false)} />
+                    : <Bookmark onClick={() => setBookmarkFilled(true)} />}
+                </Box>
+              </Box>
+
+              <Typography variant="h5">{product?.overview}</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                width: '20%'
+              }}
+            >
+              <Button startIcon={<Pencil />} variant="contained">
+                Edit
+              </Button>
+              <Button
+                color="secondary"
+                startIcon={<Trash />}
+                variant="contained"
+              >
+                Delete
+              </Button>
+            </Box>
           </Box>
-          <Typography>{product?.overview}</Typography>
-        </Box>
-      </Box>
-      <Box
-        className="keen-slider"
-        ref={ref}
-        sx={{
-          alignItems: 'start',
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrapL: 'wrap',
-          gap: '1rem'
-        }}
-      >
-      {stateDetail?.recommendations?.map((product) => <Box className="keen-slider__slide" key={product.id} ><Recommendations  recommendations={product} /> </Box>)}
-      </Box>
+          <Typography
+            sx={{ fontWeight: 'bold', marginBottom: '1rem' }}
+            variant="h4"
+          >
+            Recommendations
+          </Typography>
+          <Recommendations
+            direction={direction}
+            recommendations={stateDetail?.recommendations} />
+        </>
+        )
+        : <Typography>Loading...</Typography>}
     </>
   );
 };

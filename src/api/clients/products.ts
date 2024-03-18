@@ -6,10 +6,11 @@ import type { Genre, Product } from '@models/products/types.js';
 import { API, apiURL } from '../base.js';
 
 interface productsAPIResponse {
-  details: Product[]
+  details: Product
   genre: Genre[]
   limit: number
   products: Product[]
+  recommendations: Product[]
   skip: number
   total: number
 }
@@ -44,7 +45,7 @@ export const getRecommendations = async (id: string, options?: Readonly<FetchURL
   const detailEndpoint = `movie/${id}/recommendations`;
   const detailUrl = apiURL(detailEndpoint, options);
   const { results }: any  = (await API().get(detailUrl.toString())).data;
-  const response = results as productsAPIResponse['details'];
+  const response = results as productsAPIResponse['recommendations'];
 
   response.forEach((element) => {
     const poster = `https://image.tmdb.org/t/p/original/${element.poster_path}`;
@@ -55,6 +56,16 @@ export const getRecommendations = async (id: string, options?: Readonly<FetchURL
 
     element.backdrop_path = backdrop_path;
   });
+
+  return response;
+};
+
+export const getDetail = async (id: string, options?: Readonly<FetchURLOptions>) => {
+  const detailEndpoint = `movie/${id}`;
+  const detailUrl = apiURL(detailEndpoint, options);
+  const { data }  = await API().get(detailUrl.toString());
+
+  const response = data as productsAPIResponse['details'];
 
   return response;
 };

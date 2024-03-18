@@ -2,6 +2,7 @@
 import type { Command, FetchURLOptions } from '@nxweb/core';
 
 import {
+  getDetail,
   getGenre,
   getProducts,
   getRecommendations
@@ -49,11 +50,12 @@ const productsCommand = {
   detail: (id: string) => {
     return async (dispatch) => {
       try {
-        const recommendations = await getRecommendations(id);
+        const [recommendations, detail] = await Promise.all([getRecommendations(id), getDetail(id)]);
 
         if (recommendations) {
           const value: ProductDetailModel = {
-            recommendations
+            recommendations,
+            detail
           };
 
           dispatch({
