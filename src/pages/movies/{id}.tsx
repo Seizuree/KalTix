@@ -4,15 +4,13 @@ import { useParams } from 'react-router-dom';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { Box, Button, Chip, styled, Typography } from '@components/material.js';
+import { Box, Chip, styled, Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 const Product: PageComponent = () => {
   const { id } = useParams();
   const [state, dispatch] = useStore((store) => store.products);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [stateBooked, dispatchBooked] = useStore((store) => store.booking);
-
   const command = useCommand((cmd) => cmd);
 
   const product = useMemo(
@@ -56,11 +54,6 @@ const Product: PageComponent = () => {
     });
   }, [product, state]);
 
-  const handleBooking = () => {
-    if (!product) return;
-    dispatchBooked(command.booking.create(product));
-  };
-
   return (
     <>
       <Box
@@ -74,7 +67,7 @@ const Product: PageComponent = () => {
         <Img
           alt={product?.title}
           height="500"
-          src={`https://image.tmdb.org/t/p/original/${product?.poster_path}`} />
+          src={product?.poster_path.startsWith('/') ? `https://image.tmdb.org/t/p/original/${product?.poster_path}` : product?.poster_path} />
         <Box
           sx={{
             alignItems: 'start',
@@ -95,7 +88,6 @@ const Product: PageComponent = () => {
       <div>{product?.title}</div>
       {genreNames}
       <pre>{product ? JSON.stringify(product, null, 2) : null}</pre>
-      <Button onClick={handleBooking}>Book Ticket</Button>
     </>
   );
 };
