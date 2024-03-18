@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 
 import {
@@ -71,7 +70,7 @@ const AddMovie: PageComponent = () => {
     dispatch(
       command.products.create({
         genre_ids: newGenreId,
-        id: 1000,
+        id: Math.floor(Math.random() * 9999999) + 1,
         overview: newOverview,
         poster_path: newPosterPath,
         title: newTitle

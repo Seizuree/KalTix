@@ -67,7 +67,7 @@ const Product: PageComponent = () => {
         <Img
           alt={product?.title}
           height="500"
-          src={`https://image.tmdb.org/t/p/original/${product?.poster_path}`} />
+          src={product?.poster_path.startsWith('/') ? `https://image.tmdb.org/t/p/original/${product?.poster_path}` : product?.poster_path} />
         <Box
           sx={{
             alignItems: 'start',
