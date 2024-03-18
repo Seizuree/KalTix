@@ -35,22 +35,25 @@ enum ProductsActionType {
   Load = 'products-load',
   Clear = 'products-clear',
   Detail = 'products-detail',
-  Create = 'products-create'
+  Create = 'products-create',
+  Update = 'products-update'
 }
 
-type ProductsAction =
-  {
-    type: ProductsActionType.Clear
-  } | {
-    type: ProductsActionType.Create
-    value?: ProductsModel
-  } | {
-    type: ProductsActionType.Detail
-    value?: ProductDetailModel
-  } | {
-    type: ProductsActionType.Load
-    value?: ProductsModel
-  };
+type ProductsAction = {
+  type: ProductsActionType.Clear
+} | {
+  type: ProductsActionType.Create
+  value?: ProductsModel
+} | {
+  type: ProductsActionType.Load
+  value?: ProductsModel
+} | {
+  type: ProductsActionType.Update
+  value?: ProductsModel
+} | {
+  type: ProductsActionType.Detail
+  value?: ProductDetailModel
+} ;
 
 export { ProductsActionType };
 export type {

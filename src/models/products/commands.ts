@@ -80,6 +80,17 @@ const productsCommand = {
         }
       } catch (err) {
         console.error(err);
+  update: (product: Product) => {
+    return (dispatch) => {
+      if (product) {
+        const value: ProductsModel = {
+          products: [product]
+        };
+
+        dispatch({
+          type: ProductsActionType.Update,
+          value
+        });
       }
     };
   }

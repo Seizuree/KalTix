@@ -17,12 +17,7 @@ const productsReducer = (
   let newProducts: Product[] = [];
   switch (action.type) {
     case ProductsActionType.Load:
-
-      if (!state.products) {
-        return { ...action.value };
-      }
-
-      return { ...state };
+      return !state.products ? { ...action.value } : { ...state };
     case ProductsActionType.Clear:
       return {};
     case ProductsActionType.Create:
@@ -34,6 +29,17 @@ const productsReducer = (
           ? [...state.products, ...newProducts]
           : newProducts
       };
+    case ProductsActionType.Update:
+      const { products } = state;
+      const { products: updatedProducts } = action.value || {};
+
+      if (products && updatedProducts && products[0]?.id === updatedProducts[0]?.id) {
+        const { genre_ids, overview, poster_path, release_date, title } = updatedProducts[0];
+
+        Object.assign(products[0], { genre_ids, overview, poster_path, release_date, title });
+      }
+
+      return { ...state };
 
     default:
       return state;
