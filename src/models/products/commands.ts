@@ -1,12 +1,22 @@
 /* eslint-disable sort-keys */
 import type { Command, FetchURLOptions } from '@nxweb/core';
 
-import { getGenre, getProducts } from '@api/clients/products.js';
+import {
+  getDetail,
+  getGenre,
+  getProducts,
+  getRecommendations
+} from '@api/clients/products.js';
 import type { RootModel } from '@models/types.js';
 
 import { ProductsActionType } from './types.js';
 
-import type { Product, ProductsAction, ProductsModel } from './types.js';
+import type {
+  Product,
+  ProductDetailModel,
+  ProductsAction,
+  ProductsModel
+} from './types.js';
 
 const productsCommand = {
   clear: (): ProductsAction => {
@@ -52,6 +62,24 @@ const productsCommand = {
       }
     };
   },
+  detail: (id: string) => {
+    return async (dispatch) => {
+      try {
+        const [recommendations, detail] = await Promise.all([getRecommendations(id), getDetail(id)]);
+
+        if (recommendations) {
+          const value: ProductDetailModel = {
+            recommendations,
+            detail
+          };
+
+          dispatch({
+            type: ProductsActionType.Detail,
+            value
+          });
+        }
+      } catch (err) {
+        console.error(err);
   update: (product: Product) => {
     return (dispatch) => {
       if (product) {

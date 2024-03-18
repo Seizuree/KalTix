@@ -7,17 +7,19 @@ import {
 } from '@nxweb/react';
 
 import { productsCommand } from './products/commands.js';
-import { productsReducer } from './products/reducers.js';
+import { productDetailReducer, productsReducer } from './products/reducers.js';
 
 import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
+  detail: productDetailReducer,
   products: productsReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
+  detail: {},
   products: {}
 };
 

@@ -1,9 +1,17 @@
 interface Product {
+  backdrop_path?: string
   genre_ids: number[]
+  genres: {
+    id: number
+    name: string
+  }[]
   id: number
+  original_language: string
   overview: string
   poster_path: string
   release_date: string
+  runtime?: number
+  tagline?: string
   title: string
 }
 
@@ -18,9 +26,15 @@ interface ProductsModel {
   products?: Product[]
 }
 
+interface ProductDetailModel {
+  detail?: Product
+  recommendations?: Product[]
+}
+
 enum ProductsActionType {
   Load = 'products-load',
   Clear = 'products-clear',
+  Detail = 'products-detail',
   Create = 'products-create',
   Update = 'products-update'
 }
@@ -36,7 +50,16 @@ type ProductsAction = {
 } | {
   type: ProductsActionType.Update
   value?: ProductsModel
-};
+} | {
+  type: ProductsActionType.Detail
+  value?: ProductDetailModel
+} ;
 
 export { ProductsActionType };
-export type { ProductsModel, ProductsAction, Product, Genre };
+export type {
+  ProductsModel,
+  ProductsAction,
+  Product,
+  Genre,
+  ProductDetailModel
+};

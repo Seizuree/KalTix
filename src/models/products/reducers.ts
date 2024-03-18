@@ -3,7 +3,12 @@
 /* eslint-disable multiline-comment-style */
 import { ProductsActionType } from './types.js';
 
-import type { Product, ProductsAction, ProductsModel } from './types.js';
+import type {
+  Product,
+  ProductDetailModel,
+  ProductsAction,
+  ProductsModel
+} from './types.js';
 
 const productsReducer = (
   state: ProductsModel = {},
@@ -41,4 +46,19 @@ const productsReducer = (
   }
 };
 
-export { productsReducer };
+const productDetailReducer = (
+  state: ProductDetailModel = {},
+  action: Readonly<ProductsAction>
+): ProductDetailModel => {
+  switch (action.type) {
+    case ProductsActionType.Detail:
+      return { ...state, ...action.value };
+    case ProductsActionType.Clear:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export { productsReducer, productDetailReducer };
