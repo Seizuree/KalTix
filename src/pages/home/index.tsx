@@ -1,53 +1,52 @@
+import { Grid } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 import type { PageComponent } from '@nxweb/react';
-
-import { getPost } from '@api/clients/products';
-
 
 import { useSettings } from '@hooks/use-settings';
 
-
-import { TopSec } from './top';
-import  PreviewSeadanya  from './previewMinimalis';
+import AddMovie from './addMovie';
+import NowPlaying from './nowPlaying';
+import  TopSec  from './top';
 import TopThree from './topThree';
-import KaltixScreen from './kaltixScreen';
-import PreviewSwiper from './previewSwiper';
-
-import Box from '@mui/material/Box';
-
-
+import Upcoming from './upcoming';
 
 const Home: PageComponent = () => {
-
-  
-
   const {
     settings: { direction }
-  } = useSettings()
-  
-  return (
+  } = useSettings();
 
-        // hanya ui, mau taro slider tapi error, blom backend , reducer saya error :((
+  return (
 
         <Box>
 
-          {/* looping slider, slider error, butuh konsul sm mentor
-          <TopSec/> */}
+          <Grid container={true}>
+            <Grid item={true} xs={12}>
+            <TopSec />
+            </Grid>
+          </Grid>
 
-        <PreviewSwiper direction={direction}/>
-          {/* nanti kubikin slider */}
-          <PreviewSeadanya/>
+        <NowPlaying />
 
-          <TopThree/>
+          <TopThree />
 
+          <Grid item={true} sx={{ pb: 4, mt: '40px' }} xs={12}>
+            <Typography
+              sx={{
+                color: 'primary.main'
+              }}
+              variant="h1"
+            >UPCOMING
+            </Typography>
+          </Grid>
 
-          {/* cuma tampilin 4 doang, sisanya di viewall product */}
-          <KaltixScreen/>
+          <Upcoming direction={direction} />
 
-          
-
+          <AddMovie />
 
         </Box>
-    
+
   );
 };
 
