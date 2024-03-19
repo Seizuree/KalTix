@@ -85,7 +85,6 @@ const UpdateMovie: PageComponent = () => {
       setTimeout(() => {
         const currentDate = dayjs(currentMovie.release_date);
         const currentRuntime = dayjs(currentMovie.runtime);
-        console.log(currentMovie.runtime)
 
         setNewBackdropPath(currentMovie.backdrop_path);
         setNewGenreId(currentMovie.genre_ids);

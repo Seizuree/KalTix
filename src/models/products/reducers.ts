@@ -41,16 +41,7 @@ const productsReducer = (
         updatedProducts &&
         products[0]?.id === updatedProducts[0]?.id
       ) {
-        const { genre_ids, overview, poster_path, release_date, title } =
-          updatedProducts[0];
-
-        Object.assign(products[0], {
-          genre_ids,
-          overview,
-          poster_path,
-          release_date,
-          title
-        });
+        Object.assign(products[0], updatedProducts[0]);
       }
 
       return { ...state };
@@ -126,4 +117,10 @@ const topRatedreducer = (
   }
 };
 
-export { productsReducer, now_playingReducer, upcomingReducer, topRatedreducer, productDetailReducer };
+export {
+  productsReducer,
+  now_playingReducer,
+  upcomingReducer,
+  topRatedreducer,
+  productDetailReducer
+};
