@@ -33,27 +33,15 @@ const productsReducer = (
           : newProducts
       };
     case ProductsActionType.Update:
-      const { products } = state;
-      const { products: updatedProducts } = action.value || {};
+      const updatedProducts = action.value?.products ?? [];
+      const updatedProductId = updatedProducts[0]?.id;
 
-      if (
-        products &&
-        updatedProducts &&
-        products[0]?.id === updatedProducts[0]?.id
-      ) {
-        const { genre_ids, overview, poster_path, release_date, title } =
-          updatedProducts[0];
-
-        Object.assign(products[0], {
-          genre_ids,
-          overview,
-          poster_path,
-          release_date,
-          title
-        });
-      }
-
-      return { ...state };
+      return {
+        ...state,
+        products: (state.products ?? []).map((product: Product) => (product.id === updatedProductId
+          ? { ...product, ...updatedProducts[0] }
+          : product))
+      };
 
     default:
       return state;
@@ -126,4 +114,10 @@ const topRatedreducer = (
   }
 };
 
-export { productsReducer, now_playingReducer, upcomingReducer, topRatedreducer, productDetailReducer };
+export {
+  productsReducer,
+  now_playingReducer,
+  upcomingReducer,
+  topRatedreducer,
+  productDetailReducer
+};

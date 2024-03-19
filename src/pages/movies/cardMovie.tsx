@@ -59,7 +59,7 @@ const CardMovie = () => {
               <CardContent>
                 <img
                   alt=""
-                  src={`https://image.tmdb.org/t/p/original/${row.poster_path}`}
+                  src={row.poster_path}
                   style={{ height: '100%', width: '100%' }} />
               </CardContent>
               <CardContent>
