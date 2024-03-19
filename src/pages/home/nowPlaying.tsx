@@ -69,19 +69,21 @@ const NowPlaying = () => {
           width: '100%'
         }}
       >
-        {state?.nowplaying?.map((np) => (
-          <ImageListItem
-            sx={{
-              height: '80%',
-              width: '80%',
-              marginLeft: '10%'
-            }}
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/original/${np.poster_path}`}
-              style={{ borderRadius: '5px 5px 5px 5px' }} />
-          </ImageListItem>
-        ))}
+        {state?.nowplaying
+          ? state.nowplaying.map((np) => (
+              <ImageListItem
+                key={np.id}
+                sx={{
+                  height: '80%',
+                  width: '80%',
+                  marginLeft: '10%'
+
+                }}
+              >
+                <img src={`https://image.tmdb.org/t/p/original/${np.poster_path}`} style={{ borderRadius: '5px 5px 5px 5px' }} />
+              </ImageListItem>
+          ))
+          : <div>No data available</div>}
       </ImageList>
     </Box>
   );

@@ -7,27 +7,32 @@ import {
 } from '@nxweb/react';
 
 import { productsCommand } from './products/commands.js';
-import { productDetailReducer, productsReducer, now_playingReducer, topRatedreducer, upcomingReducer } from './products/reducers.js';
+import {
+  now_playingReducer,
+  productDetailReducer,
+  productsReducer,
+  topRatedreducer,
+  upcomingReducer
+} from './products/reducers.js';
 
 import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
-  products: productsReducer,
-  now_playing: now_playingReducer,
-  upcoming: upcomingReducer,
-  topRated: topRatedreducer,
   detail: productDetailReducer,
+  now_playing: now_playingReducer,
+  products: productsReducer,
+  topRated: topRatedreducer,
+  upcoming: upcomingReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
-  products: {},
+  detail: {},
   now_playing: {},
-  upcoming: {},
+  products: {},
   topRated: {},
-  detail: {}
-
+  upcoming: {}
 };
 
 // ** Init commands

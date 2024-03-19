@@ -5,14 +5,12 @@ import { useEffect, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
 import { DotsVertical, MovieOff } from '@nxweb/icons/tabler';
@@ -42,6 +40,10 @@ const CardMovie = () => {
     navigate(`/movies/${id}`);
   };
 
+  const toDetail = (id: number) => {
+    navigate(`/movies/${id}`);
+  };
+
   useEffect(() => {
     dispatch(command.products.load()).catch((err: unknown) => {
       console.error(err);
@@ -54,12 +56,10 @@ const CardMovie = () => {
         {state?.products?.map((row) => (
           <Grid item={true} md={3} sx={{ pb: 4 }} xs={12}>
             <Card>
-              <CardMedia />
-
               <CardContent>
                 <img
                   alt=""
-                  src={`https://image.tmdb.org/t/p/original/${row.poster_path}`}
+                  src={row.poster_path}
                   style={{ height: '100%', width: '100%' }} />
               </CardContent>
               <CardContent>
@@ -79,13 +79,9 @@ const CardMovie = () => {
                   <IconButton size="small">
                     <MovieOff />
                   </IconButton>
-                  <Link
-                    color="primary"
-                    href={`/movies/${row.id}`}
-                    underline="none"
-                  >
+                  <Button variant="text" onClick={() => toDetail(row.id)}>
                     Details
-                  </Link>
+                  </Button>
 
                   <IconButton onClick={(e) => handleClick(e, row.id)}>
                     <DotsVertical />
