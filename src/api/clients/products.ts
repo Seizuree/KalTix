@@ -13,6 +13,9 @@ interface productsAPIResponse {
   recommendations: Product[]
   skip: number
   total: number
+  nowplaying: Product[]
+  upcoming: Product[]
+  topRated: Product []
 }
 
 export const endpoint = 'discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc';
@@ -41,6 +44,16 @@ export const getGenre = async (options?: Readonly<FetchURLOptions>) => {
   return response;
 };
 
+export const getnowPlaying = async (options?: Readonly<FetchURLOptions>) => {
+  const nPEndpoint = `movie/now_playing?language=en-US&page=1`;
+  const nPUrl = apiURL(nPEndpoint, options);
+  const { results }: any  = (await API().get(nPUrl.toString())).data;
+  const some = results.slice(0, 4);
+  const response = some as productsAPIResponse['nowplaying'];
+
+  return response;
+};
+
 export const getRecommendations = async (id: string, options?: Readonly<FetchURLOptions>) => {
   const detailEndpoint = `movie/${id}/recommendations`;
   const detailUrl = apiURL(detailEndpoint, options);
@@ -56,6 +69,25 @@ export const getRecommendations = async (id: string, options?: Readonly<FetchURL
 
     element.backdrop_path = backdrop_path;
   });
+
+  return response;
+};
+
+export const getupcoming = async (options?: Readonly<FetchURLOptions>) => {
+  const upcEndpoint = `movie/upcoming?language=en-US&page=1`;
+  const upcUrl = apiURL(upcEndpoint, options);
+  const { results }: any  = (await API().get(upcUrl.toString())).data;
+  const response = results as productsAPIResponse['upcoming'];
+
+  return response;
+};
+
+export const gettopRated = async (options?: Readonly<FetchURLOptions>) => {
+  const tPEndpoint = `movie/top_rated?language=en-US&page=1`;
+  const tPUrl = apiURL(tPEndpoint, options);
+  const { results }: any  = (await API().get(tPUrl.toString())).data;
+  const some = results.slice(0, 3);
+  const response = some as productsAPIResponse['topRated'];
 
   return response;
 };

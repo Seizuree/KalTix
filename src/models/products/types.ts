@@ -1,5 +1,4 @@
 interface Product {
-  backdrop_path?: string
   genre_ids: number[]
   genres: {
     id: number
@@ -13,11 +12,27 @@ interface Product {
   runtime?: number
   tagline?: string
   title: string
+  backdrop_path: string
 }
 
 interface Genre {
   id: number
   name: string
+}
+
+// Now playing model
+interface nowPlaying {
+  nowplaying?: Product[]
+}
+
+// Upcoming model
+interface upComing {
+  upcoming?: Product[]
+}
+
+// TopRated model
+interface topRated {
+  topRated?: Product[]
 }
 
 // Page Model
@@ -36,7 +51,10 @@ enum ProductsActionType {
   Clear = 'products-clear',
   Detail = 'products-detail',
   Create = 'products-create',
-  Update = 'products-update'
+  Update = 'products-update',
+  now_playingLoad = 'products-now_playing',
+  upcomingLoad = 'products-upcoming',
+  topRatedLoad = 'product-toprated'
 }
 
 type ProductsAction = {
@@ -45,14 +63,22 @@ type ProductsAction = {
   type: ProductsActionType.Create
   value?: ProductsModel
 } | {
+  type: ProductsActionType.Detail
+  value?: ProductDetailModel
+} | {
   type: ProductsActionType.Load
   value?: ProductsModel
 } | {
-  type: ProductsActionType.Update
-  value?: ProductsModel
+  type: ProductsActionType.now_playingLoad
+  value?: nowPlaying
 } | {
-  type: ProductsActionType.Detail
-  value?: ProductDetailModel
+  type: ProductsActionType.topRatedLoad
+  value?: topRated
+} | {
+  type: ProductsActionType.upcomingLoad
+  value?: upComing
+} | { type: ProductsActionType.Update
+  value?: ProductsModel
 } ;
 
 export { ProductsActionType };
@@ -61,5 +87,8 @@ export type {
   ProductsAction,
   Product,
   Genre,
-  ProductDetailModel
+  ProductDetailModel,
+  nowPlaying,
+  upComing,
+  topRated
 };

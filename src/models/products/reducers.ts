@@ -4,10 +4,13 @@
 import { ProductsActionType } from './types.js';
 
 import type {
+  nowPlaying,
   Product,
   ProductDetailModel,
   ProductsAction,
-  ProductsModel
+  ProductsModel,
+  topRated,
+  upComing
 } from './types.js';
 
 const productsReducer = (
@@ -61,4 +64,55 @@ const productDetailReducer = (
   }
 };
 
-export { productsReducer, productDetailReducer };
+const now_playingReducer = (
+  state: nowPlaying = {},
+  action: Readonly<ProductsAction>
+): nowPlaying => {
+  switch (action.type) {
+    case ProductsActionType.now_playingLoad:
+      if (!state.nowplaying) {
+        return { ...action.value };
+      }
+
+      return { ...state };
+
+    default:
+      return state;
+  }
+};
+
+const upcomingReducer = (
+  state: upComing = {},
+  action: Readonly<ProductsAction>
+): upComing => {
+  switch (action.type) {
+    case ProductsActionType.upcomingLoad:
+      if (!state.upcoming) {
+        return { ...action.value };
+      }
+
+      return { ...state };
+
+    default:
+      return state;
+  }
+};
+
+const topRatedreducer = (
+  state: topRated = {},
+  action: Readonly<ProductsAction>
+): topRated => {
+  switch (action.type) {
+    case ProductsActionType.topRatedLoad:
+      if (!state.topRated) {
+        return { ...action.value };
+      }
+
+      return { ...state };
+
+    default:
+      return state;
+  }
+};
+
+export { productsReducer, now_playingReducer, upcomingReducer, topRatedreducer, productDetailReducer };
