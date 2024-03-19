@@ -45,7 +45,8 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
       }}
     >
       {state?.upcoming?.map((movies) => (
-        <Box className="keen-slider__slide">
+        <Box className="keen-slider__slide"
+        key={movies.id}>
           <Card>
             <CardMedia />
             <CardContent>
