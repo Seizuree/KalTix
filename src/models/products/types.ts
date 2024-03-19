@@ -1,7 +1,7 @@
 interface Product {
-  backdrop_path?: string
+  backdrop_path: string
   genre_ids: number[]
-  genres: {
+  genres?: {
     id: number
     name: string
   }[]
@@ -10,8 +10,8 @@ interface Product {
   overview: string
   poster_path: string
   release_date: string
-  runtime?: number
-  tagline?: string
+  runtime: number
+  tagline: string
   title: string
 }
 
@@ -28,6 +28,7 @@ interface ProductsModel {
 
 interface ProductDetailModel {
   detail?: Product
+  genres?: Genre[]
   recommendations?: Product[]
 }
 
@@ -45,14 +46,14 @@ type ProductsAction = {
   type: ProductsActionType.Create
   value?: ProductsModel
 } | {
+  type: ProductsActionType.Detail
+  value?: ProductDetailModel
+} | {
   type: ProductsActionType.Load
   value?: ProductsModel
 } | {
   type: ProductsActionType.Update
   value?: ProductsModel
-} | {
-  type: ProductsActionType.Detail
-  value?: ProductDetailModel
 } ;
 
 export { ProductsActionType };

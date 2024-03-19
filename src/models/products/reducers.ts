@@ -3,12 +3,7 @@
 /* eslint-disable multiline-comment-style */
 import { ProductsActionType } from './types.js';
 
-import type {
-  Product,
-  ProductDetailModel,
-  ProductsAction,
-  ProductsModel
-} from './types.js';
+import type { Product, ProductDetailModel, ProductsAction, ProductsModel } from './types.js';
 
 const productsReducer = (
   state: ProductsModel = {},
@@ -33,10 +28,21 @@ const productsReducer = (
       const { products } = state;
       const { products: updatedProducts } = action.value || {};
 
-      if (products && updatedProducts && products[0]?.id === updatedProducts[0]?.id) {
-        const { genre_ids, overview, poster_path, release_date, title } = updatedProducts[0];
+      if (
+        products &&
+        updatedProducts &&
+        products[0]?.id === updatedProducts[0]?.id
+      ) {
+        const { genre_ids, overview, poster_path, release_date, title } =
+          updatedProducts[0];
 
-        Object.assign(products[0], { genre_ids, overview, poster_path, release_date, title });
+        Object.assign(products[0], {
+          genre_ids,
+          overview,
+          poster_path,
+          release_date,
+          title
+        });
       }
 
       return { ...state };

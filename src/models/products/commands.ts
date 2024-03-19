@@ -65,12 +65,17 @@ const productsCommand = {
   detail: (id: string) => {
     return async (dispatch) => {
       try {
-        const [recommendations, detail] = await Promise.all([getRecommendations(id), getDetail(id)]);
+        const [recommendations, detail, genres] = await Promise.all([
+          getRecommendations(id),
+          getDetail(id),
+          getGenre()
+        ]);
 
-        if (recommendations) {
+        if (recommendations && detail) {
           const value: ProductDetailModel = {
             recommendations,
-            detail
+            detail,
+            genres
           };
 
           dispatch({
@@ -80,6 +85,9 @@ const productsCommand = {
         }
       } catch (err) {
         console.error(err);
+      }
+    };
+  },
   update: (product: Product) => {
     return (dispatch) => {
       if (product) {

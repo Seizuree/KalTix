@@ -17,9 +17,11 @@ import {
   Select,
   TextField
 } from '@mui/material';
+import { renderTimeViewClock } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -31,6 +33,7 @@ import type { PageComponent } from '@nxweb/react';
 import { useCommand, useStore } from '@models/store';
 
 import type { SelectChangeEvent } from '@mui/material';
+import type { Dayjs } from 'dayjs';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,12 +46,20 @@ const AddMovie: PageComponent = () => {
     dispatch(command.products.load());
   }, []);
   const genres = useStore((store) => store.products?.genres)[0];
+
   const [genreName, setGenreName] = useState<string[]>([]);
-  const [newTitle, setNewTitle] = useState<string>('');
-  const [newOverview, setNewOverview] = useState<string>('');
+
+  const [newBackdropPath, setNewBackdropPath] = useState<string>('');
   const [newGenreId, setNewGenreId] = useState<number[]>([]);
+  const [newOriginalLanguage, setNewOriginalLanguage] = useState<string>('');
+  const [newOverview, setNewOverview] = useState<string>('');
   const [newPosterPath, setNewPosterPath] = useState<string>('');
-  const [newReleaseDate, setNewReleaseDate] = useState<Date | null>(null);
+  const [newReleaseDate, setNewReleaseDate] = useState<Dayjs | null>(
+    dayjs(new Date())
+  );
+  const [newRuntime, setNewRuntime] = useState<Dayjs | null>(dayjs(new Date()));
+  const [newTagline, setNewTagline] = useState<string>('');
+  const [newTitle, setNewTitle] = useState<string>('');
 
   const handleGenreChange = (event: SelectChangeEvent<typeof genreName>) => {
     const {
@@ -74,8 +85,22 @@ const AddMovie: PageComponent = () => {
     setNewOverview(e.target.value);
   };
 
+  const handleBackdropPathChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewBackdropPath(e.target.value);
+  };
+
   const handlePosterPathChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPosterPath(e.target.value);
+  };
+
+  const handleOriginalLanguageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewOriginalLanguage(e.target.value);
+  };
+
+  const handleTaglineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTagline(e.target.value);
   };
 
   const handleDateChange = () => {
@@ -88,14 +113,22 @@ const AddMovie: PageComponent = () => {
       .padStart(2, '0')}`;
   };
 
+  const handleRuntimeChange = () => {
+    return Math.floor((dayjs(newRuntime).hour() - 12) * 60 + dayjs(newRuntime).minute());
+  };
+
   const handleAddButton = () => {
     dispatch(
       command.products.create({
+        backdrop_path: newBackdropPath,
         genre_ids: newGenreId,
         id: Math.floor(Math.random() * 9999999) + 1,
+        original_language: newOriginalLanguage,
         overview: newOverview,
         poster_path: newPosterPath,
         release_date: handleDateChange(),
+        runtime: handleRuntimeChange(),
+        tagline: newTagline,
         title: newTitle
       })
     );
@@ -122,7 +155,7 @@ const AddMovie: PageComponent = () => {
                 onChange={handleOverviewChange} />
             </Grid>
             <Grid item={true} sm={6} xs={12}>
-              <InputLabel id="genre-checkbox-label">Genre</InputLabel>
+              <InputLabel id="genre-checkbox-label">Movie Genre</InputLabel>
               <Select
                 fullWidth={true}
                 id="genre-checkbox"
@@ -148,7 +181,7 @@ const AddMovie: PageComponent = () => {
                 <DemoContainer components={['DatePicker']}>
                   <DatePicker
                     format="YYYY-MM-DD"
-                    label="Basic date picker"
+                    label="Movie Release Date"
                     slotProps={{ textField: { fullWidth: true } }}
                     timezone="Asia/Jakarta"
                     value={newReleaseDate}
@@ -161,9 +194,47 @@ const AddMovie: PageComponent = () => {
             <Grid item={true} mt={2} xs={12}>
               <TextField
                 fullWidth={true}
-                label="Poster Path"
+                label="Movie Backdrop Path"
+                placeholder="The quick brown fox jumps over the lazy dog"
+                onChange={handleBackdropPathChange} />
+            </Grid>
+            <Grid item={true} mt={2} xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Movie Poster Path"
                 placeholder="The quick brown fox jumps over the lazy dog"
                 onChange={handlePosterPathChange} />
+            </Grid>
+            <Grid item={true} mt={2} sm={4} xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Movie Original Language"
+                placeholder="The quick brown fox jumps over the lazy dog"
+                onChange={handleOriginalLanguageChange} />
+            </Grid>
+            <Grid item={true} mt={1} sm={4} xs={12}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['TimePicker']}>
+                  <TimePicker
+                    ampmInClock={false}
+                    format="hh:mm"
+                    label="Movie Duration"
+                    slotProps={{ textField: { fullWidth: true } }}
+                    value={newRuntime}
+                    viewRenderers={{
+                      hours: renderTimeViewClock,
+                      minutes: renderTimeViewClock
+                    }}
+                    onChange={(time) => setNewRuntime(time)} />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Grid>
+            <Grid item={true} mt={2} sm={4} xs={12}>
+              <TextField
+                fullWidth={true}
+                label="Movie Tagline"
+                placeholder="The quick brown fox jumps over the lazy dog"
+                onChange={handleTaglineChange} />
             </Grid>
             <Grid item={true} mt={2} xs={12}>
               <Button

@@ -15,7 +15,8 @@ interface productsAPIResponse {
   total: number
 }
 
-export const endpoint = 'discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc';
+export const endpoint =
+  'discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc';
 
 export const getProducts = async (options?: Readonly<FetchURLOptions>) => {
   const url = apiURL(endpoint, options);
@@ -35,24 +36,27 @@ export const getProducts = async (options?: Readonly<FetchURLOptions>) => {
 export const getGenre = async (options?: Readonly<FetchURLOptions>) => {
   const genreEndpoint = 'genre/movie/list?language=en';
   const genreUrl = apiURL(genreEndpoint, options);
-  const { genres }: any  = (await API().get(genreUrl.toString())).data;
+  const { genres }: any = (await API().get(genreUrl.toString())).data;
   const response = genres as productsAPIResponse['genre'];
 
   return response;
 };
 
-export const getRecommendations = async (id: string, options?: Readonly<FetchURLOptions>) => {
+export const getRecommendations = async (
+  id: string,
+  options?: Readonly<FetchURLOptions>
+) => {
   const detailEndpoint = `movie/${id}/recommendations`;
   const detailUrl = apiURL(detailEndpoint, options);
-  const { results }: any  = (await API().get(detailUrl.toString())).data;
+  const { results }: any = (await API().get(detailUrl.toString())).data;
   const response = results as productsAPIResponse['recommendations'];
 
   response.forEach((element) => {
-    const poster = `https://image.tmdb.org/t/p/original/${element.poster_path}`;
+    const poster = `https://image.tmdb.org/t/p/original${element.poster_path}`;
 
     element.poster_path = poster;
 
-    const backdrop_path = `https://image.tmdb.org/t/p/original/${element.backdrop_path}`;
+    const backdrop_path = `https://image.tmdb.org/t/p/original${element.backdrop_path}`;
 
     element.backdrop_path = backdrop_path;
   });
@@ -60,12 +64,27 @@ export const getRecommendations = async (id: string, options?: Readonly<FetchURL
   return response;
 };
 
-export const getDetail = async (id: string, options?: Readonly<FetchURLOptions>) => {
+export const getDetail = async (
+  id: string,
+  options?: Readonly<FetchURLOptions>
+) => {
   const detailEndpoint = `movie/${id}`;
   const detailUrl = apiURL(detailEndpoint, options);
-  const { data }  = await API().get(detailUrl.toString());
+  const { data } = await API().get(detailUrl.toString());
 
   const response = data as productsAPIResponse['details'];
+
+  const poster = `https://image.tmdb.org/t/p/original${response.poster_path}`;
+
+  response.poster_path = poster;
+
+  const backdrop_path = `https://image.tmdb.org/t/p/original${response.backdrop_path}`;
+
+  response.backdrop_path = backdrop_path;
+
+  if (response.genres) {
+    response.genre_ids = response.genres?.map((genre) => genre.id);
+  }
 
   return response;
 };

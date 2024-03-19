@@ -47,10 +47,6 @@ const Products: PageComponent = () => {
     dispatch(command.products.load()).catch((err: unknown) => {
       console.error(err);
     });
-
-    return () => {
-      dispatch(command.products.clear());
-    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
