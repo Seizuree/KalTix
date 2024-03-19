@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,67 +28,61 @@ const NowPlaying = () => {
   return (
     <Box
       sx={{
-
-        width: '100%',
+        alignItems: 'center',
+        borderRadius: '10px',
         height: '100%',
         justifyContent: 'center',
-        alignItems: 'center',
         marginBottom: '20px',
         marginTop: '40px',
-        borderRadius: '10px'
+        width: '100%'
       }}
     >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-
-          }}
-        >
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}
+      >
         <Typography
           sx={{
-
             color: 'primary.main'
           }}
           variant="h1"
-        >NOW PLAYING
+        >
+          NOW PLAYING
         </Typography>
 
         {/* untuk ke productlist  */}
 
-          <Button variant="text" onClick={handleDetail}>
+        <Button variant="text" onClick={handleDetail}>
           See All
-          </Button>
+        </Button>
+      </Box>
 
-        </Box>
-
-        <ImageList
-          cols={4}
-          sx={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            width: '100%'
-
-          }}
-        >
-          {state?.nowplaying?.map((np) => (
-
-           <ImageListItem
-             sx={{
-               height: '80%',
-               width: '80%',
-               marginLeft: '10%'
-
-             }}
-           >
-            <img src={`https://image.tmdb.org/t/p/original/${np.poster_path}`} style={{ borderRadius: '5px 5px 5px 5px' }} />
-           </ImageListItem>
-
-          ))}
-
-        </ImageList>
+      <ImageList
+        cols={4}
+        sx={{
+          alignItems: 'center',
+          height: '100%',
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
+        {state?.nowplaying?.map((np) => (
+          <ImageListItem
+            sx={{
+              height: '80%',
+              width: '80%',
+              marginLeft: '10%'
+            }}
+          >
+            <img
+              src={`https://image.tmdb.org/t/p/original/${np.poster_path}`}
+              style={{ borderRadius: '5px 5px 5px 5px' }} />
+          </ImageListItem>
+        ))}
+      </ImageList>
     </Box>
   );
 };
