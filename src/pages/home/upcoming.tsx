@@ -45,8 +45,7 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
       }}
     >
       {state?.upcoming?.map((movies) => (
-        <Box className="keen-slider__slide"
-        key={movies.id}>
+        <Box className="keen-slider__slide" key={movies.id}>
           <Card>
             <CardMedia />
             <CardContent>
@@ -67,23 +66,19 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
                 {movies.release_date}
               </Typography>
             </CardContent>
-            <Button
-              sx={{
-                py: 2.5,
-                width: '100%',
-                borderTopLeftRadius: 0,
-                borderTopRightRadius: 0
-              }}
-              variant="contained"
-            >
-              <Link
-                color="white"
-                href={`/movies/${movies.id}`}
-                underline="none"
+            <Link color="white" href={`/movies/${movies.id}`} underline="none">
+              <Button
+                sx={{
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                  py: 2.5,
+                  width: '100%'
+                }}
+                variant="contained"
               >
                 Details
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Card>
         </Box>
       ))}

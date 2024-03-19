@@ -1,4 +1,5 @@
 import {
+  History,
   Movie,
   MovieOff,
   SmartHome
@@ -24,6 +25,12 @@ export const navigation: readonly HorizontalNavItemsType[] = [
     id: 'addMovies',
     link: '/add',
     text: 'Add Movies'
+  },
+  {
+    icon: <History />,
+    id: 'history',
+    link: '/history',
+    text: 'Movies you added'
   }
   /*
    * {

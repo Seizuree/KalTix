@@ -30,6 +30,7 @@ import utc from 'dayjs/plugin/utc';
 import { Send } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
+import type { Product } from '@models/products/types';
 import { useCommand, useStore } from '@models/store';
 
 import type { SelectChangeEvent } from '@mui/material';
@@ -39,7 +40,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const AddMovie: PageComponent = () => {
-  const [state, dispatch] = useStore((store) => store.products);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
   useEffect(() => {
@@ -114,24 +116,27 @@ const AddMovie: PageComponent = () => {
   };
 
   const handleRuntimeChange = () => {
-    return Math.floor((dayjs(newRuntime).hour() - 12) * 60 + dayjs(newRuntime).minute());
+    return Math.floor(
+      (dayjs(newRuntime).hour() - 12) * 60 + dayjs(newRuntime).minute()
+    );
   };
 
   const handleAddButton = () => {
-    dispatch(
-      command.products.create({
-        backdrop_path: newBackdropPath,
-        genre_ids: newGenreId,
-        id: Math.floor(Math.random() * 9999999) + 1,
-        original_language: newOriginalLanguage,
-        overview: newOverview,
-        poster_path: newPosterPath,
-        release_date: handleDateChange(),
-        runtime: handleRuntimeChange(),
-        tagline: newTagline,
-        title: newTitle
-      })
-    );
+    const product: Product = {
+      backdrop_path: newBackdropPath,
+      genre_ids: newGenreId,
+      id: Math.floor(Math.random() * 9999999) + 1,
+      original_language: newOriginalLanguage,
+      overview: newOverview,
+      poster_path: newPosterPath,
+      release_date: handleDateChange(),
+      runtime: handleRuntimeChange(),
+      tagline: newTagline,
+      title: newTitle
+    };
+
+    dispatch(command.products.create(product));
+    dispatch(command.history.create(product));
   };
 
   return (
