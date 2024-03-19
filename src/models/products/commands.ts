@@ -1,16 +1,47 @@
+/* eslint-disable sort-keys */
 import type { Command, FetchURLOptions } from '@nxweb/core';
 
-import { getGenre, getnowPlaying, getProducts, gettopRated, getupcoming } from '@api/clients/products.js';
+import {
+  getDetail,
+  getGenre,
+  getProducts,
+  getRecommendations,
+  getnowPlaying,
+  gettopRated,
+  getupcoming
+} from '@api/clients/products.js';
 import type { RootModel } from '@models/types.js';
 
 import { ProductsActionType } from './types.js';
 
-import type { nowPlaying, ProductsAction, ProductsModel, topRated, upComing } from './types.js';
+import type {
+  Product,
+  ProductDetailModel,
+  ProductsAction,
+  ProductsModel,
+  NowPlaying,
+  topRated,
+  upComing
+} from './types.js';
 
 const productsCommand = {
   clear: (): ProductsAction => {
     return {
       type: ProductsActionType.Clear
+    };
+  },
+  create: (product: Product) => {
+    return (dispatch) => {
+      if (product) {
+        const value: ProductsModel = {
+          products: [product]
+        };
+
+        dispatch({
+          type: ProductsActionType.Create,
+          value
+        });
+      }
     };
   },
   load: (options?: Readonly<FetchURLOptions>) => {
@@ -100,6 +131,41 @@ const productsCommand = {
         }
       } catch (err) {
         console.error(err);
+      }
+    };
+  },
+  detail: (id: string) => {
+    return async (dispatch) => {
+      try {
+        const [recommendations, detail] = await Promise.all([getRecommendations(id), getDetail(id)]);
+
+        if (recommendations) {
+          const value: ProductDetailModel = {
+            recommendations,
+            detail
+          };
+
+          dispatch({
+            type: ProductsActionType.Detail,
+            value
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  },
+  update: (product: Product) => {
+    return (dispatch) => {
+      if (product) {
+        const value: ProductsModel = {
+          products: [product]
+        };
+
+        dispatch({
+          type: ProductsActionType.Update,
+          value
+        });
       }
     };
   }

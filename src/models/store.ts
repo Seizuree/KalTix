@@ -7,7 +7,7 @@ import {
 } from '@nxweb/react';
 
 import { productsCommand } from './products/commands.js';
-import { now_playingReducer, productsReducer, topRatedreducer, upcomingReducer } from './products/reducers.js';
+import { productDetailReducer, productsReducer, now_playingReducer, topRatedreducer, upcomingReducer } from './products/reducers.js';
 
 import type { RootAction, RootModel } from './types.js';
 
@@ -16,7 +16,8 @@ const rootReducer = combineReducers({
   products: productsReducer,
   now_playing: now_playingReducer,
   upcoming: upcomingReducer,
-  topRated: topRatedreducer
+  topRated: topRatedreducer,
+  detail: productDetailReducer,
 });
 
 // ** Init models
@@ -24,7 +25,8 @@ const rootModel: RootModel = {
   products: {},
   now_playing: {},
   upcoming: {},
-  topRated: {}
+  topRated: {},
+  detail: {}
 
 };
 
@@ -46,4 +48,4 @@ export const useStore = createStoreHook<RootModel, RootAction>();
 export const useCommand = createCommandHook(rootCommand);
 
 // ** Create dispatch hook
-export const useDipatch = createDispatchHook<RootModel, RootAction>();
+export const useDispatch = createDispatchHook<RootModel, RootAction>();
