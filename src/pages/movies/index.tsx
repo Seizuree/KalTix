@@ -1,6 +1,6 @@
 import type { PageComponent } from '@nxweb/react';
 
-import CardMovie from './cardMovie';
+import CardMovie from './CardMovie';
 
 const Products: PageComponent = () => {
   return (
