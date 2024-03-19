@@ -1,34 +1,52 @@
+import { Grid } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 import type { PageComponent } from '@nxweb/react';
 
-import { Card, CardContent, CardHeader, Grid, Typography } from '@components/material.js';
+import { useSettings } from '@hooks/use-settings';
+
+import AddMovie from './addMovie';
+import NowPlaying from './nowPlaying';
+import  TopSec  from './top';
+import TopThree from './topThree';
+import Upcoming from './upcoming';
 
 const Home: PageComponent = () => {
+  const {
+    settings: { direction }
+  } = useSettings();
+
   return (
-    <Grid container={true} spacing={6}>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="Kick start your project 🚀" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>All the best for your new project.</Typography>
-            <Typography>
-              Please make sure to read our Template Documentation to understand where to go from here and how to use our
-              template.
+
+        <Box>
+
+          <Grid container={true}>
+            <Grid item={true} xs={12}>
+            <TopSec />
+            </Grid>
+          </Grid>
+
+        <NowPlaying />
+
+          <TopThree />
+
+          <Grid item={true} sx={{ pb: 4, mt: '40px' }} xs={12}>
+            <Typography
+              sx={{
+                color: 'primary.main'
+              }}
+              variant="h1"
+            >UPCOMING
             </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="ACL and JWT 🔒" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              Access Control (ACL) and Authentication (JWT) are the two main security features of our template and are implemented in the starter-kit as well.
-            </Typography>
-            <Typography>Please read our Authentication and ACL Documentations to get more out of them.</Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+          </Grid>
+
+          <Upcoming direction={direction} />
+
+          <AddMovie />
+
+        </Box>
+
   );
 };
 

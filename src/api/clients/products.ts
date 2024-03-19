@@ -9,10 +9,13 @@ interface productsAPIResponse {
   details: Product
   genre: Genre[]
   limit: number
+  nowPlaying: Product[]
   products: Product[]
   recommendations: Product[]
   skip: number
+  topRated: Product []
   total: number
+  upcoming: Product[]
 }
 
 export const endpoint =
@@ -42,6 +45,31 @@ export const getGenre = async (options?: Readonly<FetchURLOptions>) => {
   return response;
 };
 
+export const getDetail = async (
+  id: string,
+  options?: Readonly<FetchURLOptions>
+) => {
+  const detailEndpoint = `movie/${id}`;
+  const detailUrl = apiURL(detailEndpoint, options);
+  const { data } = await API().get(detailUrl.toString());
+
+  const response = data as productsAPIResponse['details'];
+
+  const poster = `https://image.tmdb.org/t/p/original${response.poster_path}`;
+
+  response.poster_path = poster;
+
+  const backdrop_path = `https://image.tmdb.org/t/p/original${response.backdrop_path}`;
+
+  response.backdrop_path = backdrop_path;
+
+  if (response.genres) {
+    response.genre_ids = response.genres?.map((genre) => genre.id);
+  }
+
+  return response;
+};
+
 export const getRecommendations = async (
   id: string,
   options?: Readonly<FetchURLOptions>
@@ -64,27 +92,31 @@ export const getRecommendations = async (
   return response;
 };
 
-export const getDetail = async (
-  id: string,
-  options?: Readonly<FetchURLOptions>
-) => {
-  const detailEndpoint = `movie/${id}`;
-  const detailUrl = apiURL(detailEndpoint, options);
-  const { data } = await API().get(detailUrl.toString());
+export const getNowPlaying = async (options?: Readonly<FetchURLOptions>) => {
+  const nowPlayingEndpoint = `movie/now_playing?language=en-US&page=1`;
+  const nowPlayingUrl = apiURL(nowPlayingEndpoint, options);
+  const { results }: any  = (await API().get(nowPlayingUrl.toString())).data;
+  const some = results.slice(0, 4);
+  const response = some as productsAPIResponse['nowPlaying'];
 
-  const response = data as productsAPIResponse['details'];
+  return response;
+};
 
-  const poster = `https://image.tmdb.org/t/p/original${response.poster_path}`;
+export const getUpcoming = async (options?: Readonly<FetchURLOptions>) => {
+  const upComingEndpoint = `movie/upcoming?language=en-US&page=1`;
+  const upComingUrl = apiURL(upComingEndpoint, options);
+  const { results }: any  = (await API().get(upComingUrl.toString())).data;
+  const response = results as productsAPIResponse['upcoming'];
 
-  response.poster_path = poster;
+  return response;
+};
 
-  const backdrop_path = `https://image.tmdb.org/t/p/original${response.backdrop_path}`;
-
-  response.backdrop_path = backdrop_path;
-
-  if (response.genres) {
-    response.genre_ids = response.genres?.map((genre) => genre.id);
-  }
+export const getTopRated = async (options?: Readonly<FetchURLOptions>) => {
+  const tPEndpoint = `movie/top_rated?language=en-US&page=1`;
+  const tPUrl = apiURL(tPEndpoint, options);
+  const { results }: any  = (await API().get(tPUrl.toString())).data;
+  const some = results.slice(0, 3);
+  const response = some as productsAPIResponse['topRated'];
 
   return response;
 };

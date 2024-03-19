@@ -3,7 +3,15 @@
 /* eslint-disable multiline-comment-style */
 import { ProductsActionType } from './types.js';
 
-import type { Product, ProductDetailModel, ProductsAction, ProductsModel } from './types.js';
+import type {
+  nowPlaying,
+  Product,
+  ProductDetailModel,
+  ProductsAction,
+  ProductsModel,
+  topRated,
+  upComing
+} from './types.js';
 
 const productsReducer = (
   state: ProductsModel = {},
@@ -67,4 +75,55 @@ const productDetailReducer = (
   }
 };
 
-export { productsReducer, productDetailReducer };
+const now_playingReducer = (
+  state: nowPlaying = {},
+  action: Readonly<ProductsAction>
+): nowPlaying => {
+  switch (action.type) {
+    case ProductsActionType.NowPlayingLoad:
+      if (!state.nowplaying) {
+        return { ...action.value };
+      }
+
+      return { ...state };
+
+    default:
+      return state;
+  }
+};
+
+const upcomingReducer = (
+  state: upComing = {},
+  action: Readonly<ProductsAction>
+): upComing => {
+  switch (action.type) {
+    case ProductsActionType.UpcomingLoad:
+      if (!state.upcoming) {
+        return { ...action.value };
+      }
+
+      return { ...state };
+
+    default:
+      return state;
+  }
+};
+
+const topRatedreducer = (
+  state: topRated = {},
+  action: Readonly<ProductsAction>
+): topRated => {
+  switch (action.type) {
+    case ProductsActionType.TopratedLoad:
+      if (!state.topRated) {
+        return { ...action.value };
+      }
+
+      return { ...state };
+
+    default:
+      return state;
+  }
+};
+
+export { productsReducer, now_playingReducer, upcomingReducer, topRatedreducer, productDetailReducer };

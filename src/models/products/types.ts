@@ -20,6 +20,21 @@ interface Genre {
   name: string
 }
 
+// Now playing model
+interface nowPlaying {
+  nowplaying?: Product[]
+}
+
+// Upcoming model
+interface upComing {
+  upcoming?: Product[]
+}
+
+// TopRated model
+interface topRated {
+  topRated?: Product[]
+}
+
 // Page Model
 interface ProductsModel {
   genres?: Genre[]
@@ -37,7 +52,10 @@ enum ProductsActionType {
   Clear = 'products-clear',
   Detail = 'products-detail',
   Create = 'products-create',
-  Update = 'products-update'
+  Update = 'products-update',
+  NowPlayingLoad = 'products-now_playing',
+  UpcomingLoad = 'products-upcoming',
+  TopratedLoad = 'product-toprated'
 }
 
 type ProductsAction = {
@@ -52,7 +70,15 @@ type ProductsAction = {
   type: ProductsActionType.Load
   value?: ProductsModel
 } | {
-  type: ProductsActionType.Update
+  type: ProductsActionType.NowPlayingLoad
+  value?: nowPlaying
+} | {
+  type: ProductsActionType.TopratedLoad
+  value?: topRated
+} | {
+  type: ProductsActionType.UpcomingLoad
+  value?: upComing
+} | { type: ProductsActionType.Update
   value?: ProductsModel
 } ;
 
@@ -62,5 +88,8 @@ export type {
   ProductsAction,
   Product,
   Genre,
-  ProductDetailModel
+  ProductDetailModel,
+  nowPlaying,
+  upComing,
+  topRated
 };
