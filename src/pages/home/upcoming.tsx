@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import {  Link } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,12 +11,11 @@ import { useKeenSlider } from 'keen-slider/react';
 
 import { useCommand, useStore } from '@models/store.js';
 
-import { Link, type Direction } from '@mui/material';
+import type { Direction } from '@mui/material';
 
 const Upcoming = ({ direction }: { readonly direction: Direction }) => {
   const [state, dispatch] = useStore((store) => store.upcoming);
   const command = useCommand((cmd) => cmd);
-  
 
   useEffect(() => {
     dispatch(command.products.upComingLoad()).catch((err: unknown) => {
@@ -40,13 +40,15 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
          display: 'flex',
          flexDirection: 'row',
          alignItems: 'center'
-         
 
        }}
      >
 
                 {state?.upcoming?.map((movies) => (
-                    <Box className="keen-slider__slide">
+                    <Box
+                      className="keen-slider__slide"
+                      key={movies.id}
+                    >
 
                     <Card>
                         <CardMedia />
@@ -65,7 +67,7 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
 
                     </CardContent>
                     <Button sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }} variant="contained">
-                        <Link href={`/movies/${movies.id}`} underline="none" color="white">Details</Link>
+                        <Link color="white" href={`/movies/${movies.id}`} underline="none">Details</Link>
                     </Button>
                     </Card>
                     </Box>

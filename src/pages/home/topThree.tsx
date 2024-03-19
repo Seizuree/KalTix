@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
@@ -52,26 +51,28 @@ const TopThree = () => {
 
           }}
         >
-          {state?.topRated?.map((top) => (
+           {state?.topRated
+             ? state.topRated.map((top, index) => (
             <ImageListItem
+              key={index}
               sx={{
                 height: '70%',
                 width: '70%',
                 marginLeft: '15%'
-
               }}
             >
-
-              <img src={`https://image.tmdb.org/t/p/original/${top.backdrop_path}`} style={{ borderRadius: '5px 5px 5px 5px' }} />
+              <img
+                alt={top.title}
+                src={`https://image.tmdb.org/t/p/original/${top.backdrop_path}`}
+                style={{ borderRadius: '5px' }} />
               <ImageListItemBar
-                
                 title={top.title} />
             </ImageListItem>
-          ))}
+             ))
+             : <div>No data available</div>}
         </ImageList>
     </Box>
   );
 };
 
 export default TopThree;
-
