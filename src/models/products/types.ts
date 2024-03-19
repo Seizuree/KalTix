@@ -1,6 +1,7 @@
 interface Product {
+  backdrop_path: string
   genre_ids: number[]
-  genres: {
+  genres?: {
     id: number
     name: string
   }[]
@@ -9,10 +10,9 @@ interface Product {
   overview: string
   poster_path: string
   release_date: string
-  runtime?: number
-  tagline?: string
+  runtime: number
+  tagline: string
   title: string
-  backdrop_path: string
 }
 
 interface Genre {
@@ -43,6 +43,7 @@ interface ProductsModel {
 
 interface ProductDetailModel {
   detail?: Product
+  genres?: Genre[]
   recommendations?: Product[]
 }
 
@@ -52,9 +53,9 @@ enum ProductsActionType {
   Detail = 'products-detail',
   Create = 'products-create',
   Update = 'products-update',
-  now_playingLoad = 'products-now_playing',
-  upcomingLoad = 'products-upcoming',
-  topRatedLoad = 'product-toprated'
+  NowPlayingLoad = 'products-now_playing',
+  UpcomingLoad = 'products-upcoming',
+  TopratedLoad = 'product-toprated'
 }
 
 type ProductsAction = {
@@ -69,13 +70,13 @@ type ProductsAction = {
   type: ProductsActionType.Load
   value?: ProductsModel
 } | {
-  type: ProductsActionType.now_playingLoad
+  type: ProductsActionType.NowPlayingLoad
   value?: nowPlaying
 } | {
-  type: ProductsActionType.topRatedLoad
+  type: ProductsActionType.TopratedLoad
   value?: topRated
 } | {
-  type: ProductsActionType.upcomingLoad
+  type: ProductsActionType.UpcomingLoad
   value?: upComing
 } | { type: ProductsActionType.Update
   value?: ProductsModel

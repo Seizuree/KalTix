@@ -36,10 +36,21 @@ const productsReducer = (
       const { products } = state;
       const { products: updatedProducts } = action.value || {};
 
-      if (products && updatedProducts && products[0]?.id === updatedProducts[0]?.id) {
-        const { genre_ids, overview, poster_path, release_date, title } = updatedProducts[0];
+      if (
+        products &&
+        updatedProducts &&
+        products[0]?.id === updatedProducts[0]?.id
+      ) {
+        const { genre_ids, overview, poster_path, release_date, title } =
+          updatedProducts[0];
 
-        Object.assign(products[0], { genre_ids, overview, poster_path, release_date, title });
+        Object.assign(products[0], {
+          genre_ids,
+          overview,
+          poster_path,
+          release_date,
+          title
+        });
       }
 
       return { ...state };
@@ -69,7 +80,7 @@ const now_playingReducer = (
   action: Readonly<ProductsAction>
 ): nowPlaying => {
   switch (action.type) {
-    case ProductsActionType.now_playingLoad:
+    case ProductsActionType.NowPlayingLoad:
       if (!state.nowplaying) {
         return { ...action.value };
       }
@@ -86,7 +97,7 @@ const upcomingReducer = (
   action: Readonly<ProductsAction>
 ): upComing => {
   switch (action.type) {
-    case ProductsActionType.upcomingLoad:
+    case ProductsActionType.UpcomingLoad:
       if (!state.upcoming) {
         return { ...action.value };
       }
@@ -103,7 +114,7 @@ const topRatedreducer = (
   action: Readonly<ProductsAction>
 ): topRated => {
   switch (action.type) {
-    case ProductsActionType.topRatedLoad:
+    case ProductsActionType.TopratedLoad:
       if (!state.topRated) {
         return { ...action.value };
       }
