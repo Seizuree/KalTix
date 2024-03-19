@@ -44,6 +44,11 @@ const CardMovie = () => {
     navigate(`/movies/${id}`);
   };
 
+  const handleDelete = (id: number) => {
+    dispatch(command.products.delete(id));
+    navigate('/movies');
+  };
+
   useEffect(() => {
     dispatch(command.products.load()).catch((err: unknown) => {
       console.error(err);
@@ -76,7 +81,7 @@ const CardMovie = () => {
                     width: '100%'
                   }}
                 >
-                  <IconButton size="small">
+                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
                     <MovieOff />
                   </IconButton>
                   <Button variant="text" onClick={() => toDetail(row.id)}>
