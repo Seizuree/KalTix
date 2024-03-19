@@ -33,18 +33,15 @@ const productsReducer = (
           : newProducts
       };
     case ProductsActionType.Update:
-      const { products } = state;
-      const { products: updatedProducts } = action.value || {};
+      const updatedProducts = action.value?.products ?? [];
+      const updatedProductId = updatedProducts[0]?.id;
 
-      if (
-        products &&
-        updatedProducts &&
-        products[0]?.id === updatedProducts[0]?.id
-      ) {
-        Object.assign(products[0], updatedProducts[0]);
-      }
-
-      return { ...state };
+      return {
+        ...state,
+        products: (state.products ?? []).map((product: Product) => (product.id === updatedProductId
+          ? { ...product, ...updatedProducts[0] }
+          : product))
+      };
 
     default:
       return state;
