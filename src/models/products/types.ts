@@ -15,6 +15,10 @@ interface Product {
   title: string
 }
 
+interface ProductDeleted {
+  id: number
+}
+
 interface Genre {
   id: number
   name: string
@@ -49,7 +53,7 @@ interface ProductDetailModel {
 
 enum ProductsActionType {
   Load = 'products-load',
-  Clear = 'products-clear',
+  Delete = 'product-delete',
   Detail = 'products-detail',
   Create = 'products-create',
   Update = 'products-update',
@@ -59,10 +63,11 @@ enum ProductsActionType {
 }
 
 type ProductsAction = {
-  type: ProductsActionType.Clear
-} | {
   type: ProductsActionType.Create
   value?: ProductsModel
+} | {
+  type: ProductsActionType.Delete
+  value: ProductDeleted
 } | {
   type: ProductsActionType.Detail
   value?: ProductDetailModel
@@ -86,6 +91,7 @@ export { ProductsActionType };
 export type {
   ProductsModel,
   ProductsAction,
+  ProductDeleted,
   Product,
   Genre,
   ProductDetailModel,

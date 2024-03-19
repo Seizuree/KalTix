@@ -52,6 +52,13 @@ const Product: PageComponent = () => {
     navigate(`/update/${id}`);
   };
 
+  const handleDelete = () => {
+    if (product?.id) {
+      dispatch(command.products.delete(product?.id));
+      navigate('/movies');
+    }
+  };
+
   useEffect(() => {
     dispatch(command.products.load()).catch((err: unknown) => {
       console.error(err);
@@ -66,10 +73,6 @@ const Product: PageComponent = () => {
           setLoad(true);
         });
     }
-
-    // return () => {
-    //   dispatch(command.products.clear());
-    // };
   }, [id]);
 
   const Img = styled('img')(({ theme }) => ({
@@ -199,6 +202,7 @@ const Product: PageComponent = () => {
                 color="secondary"
                 startIcon={<Trash />}
                 variant="contained"
+                onClick={handleDelete}
               >
                 Delete
               </Button>
