@@ -1,3 +1,4 @@
+/* eslint-disable logical-assignment-operators */
 /* eslint-disable capitalized-comments */
 /* eslint-disable multiline-comment-style */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -27,10 +28,20 @@ import Recommendations from '../../components/movies/recommendations';
 const Product: PageComponent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [state, dispatch] = useStore((store) => store.detail);
+  const [state, dispatch] = useStore((store) => store);
 
   const command = useCommand((cmd) => cmd);
-  const product = useMemo(() => state?.detail, [state]);
+
+  const product = useMemo(() => {
+    let product = state?.products?.products?.find(
+      (o) => o.id.toString() === id
+    );
+    if (!product) {
+      product = state.detail?.detail;
+    }
+
+    return product;
+  }, [state, id]);
 
   const [heartFilled, setHeartFilled] = useState(false);
   const [starFilled, setStarFilled] = useState(false);
@@ -55,7 +66,11 @@ const Product: PageComponent = () => {
           setLoad(true);
         });
     }
-  }, []);
+
+    // return () => {
+    //   dispatch(command.products.clear());
+    // };
+  }, [id]);
 
   const Img = styled('img')(({ theme }) => ({
     [theme.breakpoints.down('lg')]: {
@@ -67,16 +82,12 @@ const Product: PageComponent = () => {
   }));
 
   const genreNames = useMemo(() => {
-    if (!product || !state || !state.genres) return [];
+    if (!product || !state || !state.detail || !state.detail.genres) return [];
 
     return product.genre_ids.map((genreId: number) => {
-      if (state.genres) {
-        const genre = state.genres.find((g) => g.id === genreId);
+      const genre = state?.detail?.genres?.find((g) => g.id === genreId);
 
-        return genre ? genre.name : 'Unknown';
-      }
-
-      return [];
+      return genre ? genre.name : 'Unknown';
     });
   }, [product, state]);
 
@@ -201,7 +212,7 @@ const Product: PageComponent = () => {
           </Typography>
           <Recommendations
             direction={direction}
-            recommendations={state?.recommendations} />
+            recommendations={state.detail?.recommendations} />
         </>
         )
         : <Typography>Loading...</Typography>}
