@@ -52,20 +52,25 @@ const TopThree = () => {
           width: '100%'
         }}
       >
-        {state?.topRated?.map((top) => (
-          <ImageListItem
-            sx={{
-              height: '70%',
-              width: '70%',
-              marginLeft: '15%'
-            }}
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/original/${top.backdrop_path}`}
-              style={{ borderRadius: '5px 5px 5px 5px' }} />
-            <ImageListItemBar title={top.title} />
-          </ImageListItem>
-        ))}
+        {state?.topRated
+             ? state.topRated.map((top) => (
+            <ImageListItem
+              key={top.id}
+              sx={{
+                height: '70%',
+                width: '70%',
+                marginLeft: '15%'
+              }}
+            >
+              <img
+                alt={top.title}
+                src={`https://image.tmdb.org/t/p/original/${top.backdrop_path}`}
+                style={{ borderRadius: '5px' }} />
+              <ImageListItemBar
+                title={top.title} />
+            </ImageListItem>
+             ))
+             : <div>No data available</div>}
       </ImageList>
     </Box>
   );
