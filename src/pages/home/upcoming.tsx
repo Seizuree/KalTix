@@ -10,11 +10,12 @@ import { useKeenSlider } from 'keen-slider/react';
 
 import { useCommand, useStore } from '@models/store.js';
 
-import type { Direction } from '@mui/material';
+import { Link, type Direction } from '@mui/material';
 
 const Upcoming = ({ direction }: { readonly direction: Direction }) => {
   const [state, dispatch] = useStore((store) => store.upcoming);
   const command = useCommand((cmd) => cmd);
+  
 
   useEffect(() => {
     dispatch(command.products.upComingLoad()).catch((err: unknown) => {
@@ -23,7 +24,7 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
   }, []);
 
   const [ref] = useKeenSlider<HTMLDivElement>({
-
+    loop: true,
     rtl: direction === 'rtl',
     slides: {
       perView: 4,
@@ -38,8 +39,8 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
        sx={{
          display: 'flex',
          flexDirection: 'row',
-         alignItems: 'center',
-         top: 0
+         alignItems: 'center'
+         
 
        }}
      >
@@ -64,7 +65,7 @@ const Upcoming = ({ direction }: { readonly direction: Direction }) => {
 
                     </CardContent>
                     <Button sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }} variant="contained">
-                        Details
+                        <Link href={`/movies/${movies.id}`} underline="none" color="white">Details</Link>
                     </Button>
                     </Card>
                     </Box>

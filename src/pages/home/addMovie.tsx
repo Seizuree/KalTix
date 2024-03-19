@@ -12,7 +12,7 @@ const AddMovie = () => {
   const navigate = useNavigate();
 
   const handleDetail = () => {
-    navigate(``);
+    navigate(`/add`);
   };
 
   return (
@@ -20,10 +20,11 @@ const AddMovie = () => {
     <Grid
       container={true}
       sx={{
-        marginTop: '40px'
+        marginTop: '40px',
+        justifyContent : 'center',
       }}
     >
-        <Grid item={true} xs={12}>
+        <Grid item={true} xs={8}>
         <Card>
       <CardContent
         sx={{

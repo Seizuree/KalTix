@@ -4,9 +4,9 @@ import type { Command, FetchURLOptions } from '@nxweb/core';
 import {
   getDetail,
   getGenre,
+  getnowPlaying,
   getProducts,
   getRecommendations,
-  getnowPlaying,
   gettopRated,
   getupcoming
 } from '@api/clients/products.js';
@@ -15,11 +15,11 @@ import type { RootModel } from '@models/types.js';
 import { ProductsActionType } from './types.js';
 
 import type {
+  nowPlaying,
   Product,
   ProductDetailModel,
   ProductsAction,
   ProductsModel,
-  NowPlaying,
   topRated,
   upComing
 } from './types.js';

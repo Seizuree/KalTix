@@ -12,7 +12,6 @@ import { useCommand, useStore } from '@models/store.js';
 const TopThree = () => {
   const [state, dispatch] = useStore((store) => store.topRated);
   const command = useCommand((cmd) => cmd);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(command.products.topRatedLoad()).catch((err: unknown) => {
@@ -38,7 +37,6 @@ const TopThree = () => {
     >
         <Typography
           sx={{
-            marginLeft: '3%',
             color: 'white'
           }}
           variant="h1"
@@ -59,18 +57,14 @@ const TopThree = () => {
               sx={{
                 height: '70%',
                 width: '70%',
-                marginLeft: '15%',
-                transition: 'transform 1s',
-                '&:hover': {
-                  height: '72%',
-                  width: '72%'
-                }
+                marginLeft: '15%'
 
               }}
             >
 
               <img src={`https://image.tmdb.org/t/p/original/${top.backdrop_path}`} style={{ borderRadius: '5px 5px 5px 5px' }} />
               <ImageListItemBar
+                
                 title={top.title} />
             </ImageListItem>
           ))}
@@ -80,3 +74,4 @@ const TopThree = () => {
 };
 
 export default TopThree;
+

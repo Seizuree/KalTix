@@ -4,13 +4,13 @@
 import { ProductsActionType } from './types.js';
 
 import type {
+  nowPlaying,
   Product,
   ProductDetailModel,
   ProductsAction,
   ProductsModel,
-  NowPlaying,
-  topRated, 
-  Upcoming
+  topRated,
+  upComing
 } from './types.js';
 
 const productsReducer = (
