@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
@@ -18,6 +19,7 @@ import {
 import { DotsVertical, MovieOff } from '@nxweb/icons/tabler';
 
 import type { Product } from '@models/products/types';
+import { useCommand, useStore } from '@models/store';
 
 interface CardMovieItemProps {
   readonly product: Product
@@ -27,6 +29,8 @@ const CardMovieItem = ({ product }: CardMovieItemProps) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [id, setId] = useState<number | null>(null);
+  const [state, dispatch] = useStore((store) => store);
+  const command = useCommand((cmd) => cmd);
   const handleClick = (event: MouseEvent<HTMLButtonElement>, id: number) => {
     setAnchorEl(event.currentTarget);
     setId(id);
@@ -43,6 +47,14 @@ const CardMovieItem = ({ product }: CardMovieItemProps) => {
 
   const toDetail = (id: number) => {
     navigate(`/movies/${id}`);
+  };
+
+  const handleDelete = () => {
+    if (product?.id) {
+      dispatch(command.products.delete(product?.id));
+      dispatch(command.history.delete(product?.id));
+      navigate('/movies');
+    }
   };
 
   return (
@@ -89,7 +101,7 @@ const CardMovieItem = ({ product }: CardMovieItemProps) => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleDetail}>Detail</MenuItem>
-        <MenuItem>Delete</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </>
   );

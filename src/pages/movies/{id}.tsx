@@ -55,6 +55,7 @@ const Product: PageComponent = () => {
   const handleDelete = () => {
     if (product?.id) {
       dispatch(command.products.delete(product?.id));
+      dispatch(command.history.delete(product?.id));
       navigate('/movies');
     }
   };

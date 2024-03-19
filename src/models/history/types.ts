@@ -4,8 +4,14 @@ interface HistoryModel {
   history?: Product[]
 }
 
+interface ProductDeleted {
+  id: number
+}
+
 enum HistoryActionType {
+  Delete = 'history-delete',
   Create = 'history-create',
+  Update = 'history-update',
   Load = 'history-load'
 }
 
@@ -15,8 +21,13 @@ type HistoryAction =
     value: HistoryModel
   }
   | {
+    type: HistoryActionType.Delete
+    value: ProductDeleted
+  }
+  | {
     type: HistoryActionType.Load
-  };
+  }
+  | { type: HistoryActionType.Update, value?: HistoryModel };
 
 export { HistoryActionType };
-export type { HistoryAction, HistoryModel };
+export type { HistoryAction, HistoryModel, ProductDeleted };

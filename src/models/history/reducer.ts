@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import type { Product } from '@models/products/types.js';
 
 import { HistoryActionType } from './types.js';
@@ -19,8 +20,29 @@ const historyReducer = (
           ? [...state.history, ...newProducts]
           : newProducts
       };
+    case HistoryActionType.Delete:
+      const productIdToDelete = action.value;
+
+      return {
+        ...state,
+        history: state.history
+          ? state.history.filter(
+            (product) => product.id !== productIdToDelete.id
+          )
+          : []
+      };
     case HistoryActionType.Load:
       return { ...state, ...action };
+    case HistoryActionType.Update:
+      const updatedProducts = action.value?.history ?? [];
+      const updatedProductId = updatedProducts[0]?.id;
+
+      return {
+        ...state,
+        history: (state.history ?? []).map((product: Product) => (product.id === updatedProductId
+          ? { ...product, ...updatedProducts[0] }
+          : product))
+      };
 
     default:
       return state;

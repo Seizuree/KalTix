@@ -28,6 +28,7 @@ import utc from 'dayjs/plugin/utc';
 import { Send } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
+import type { Product } from '@models/products/types';
 import { useCommand, useStore } from '@models/store';
 
 import type { SelectChangeEvent } from '@mui/material';
@@ -38,7 +39,7 @@ dayjs.extend(timezone);
 
 const UpdateMovie: PageComponent = () => {
   const { id } = useParams();
-  const [state, dispatch] = useStore((store) => store.products);
+  const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const UpdateMovie: PageComponent = () => {
   }, []);
 
   const currentMovie = useMemo(
-    () => state?.products?.find((current) => current.id?.toString() === id),
+    () => state?.products?.products?.find((current) => current.id?.toString() === id),
     [state, id]
   );
 
@@ -67,11 +68,11 @@ const UpdateMovie: PageComponent = () => {
   const [newTitle, setNewTitle] = useState<string>('');
 
   const genreNames = useMemo(() => {
-    if (!currentMovie || !state || !state.genres) return [];
+    if (!currentMovie || !state || !state.detail?.genres) return [];
 
     return currentMovie.genre_ids.map((genreId: number) => {
-      if (state.genres) {
-        const genre = state.genres.find((g) => g.id === genreId);
+      if (state.detail?.genres) {
+        const genre = state.detail?.genres.find((g) => g.id === genreId);
 
         return genre ? genre.name : 'Unknown';
       }
@@ -153,25 +154,28 @@ const UpdateMovie: PageComponent = () => {
   };
 
   const handleRuntimeChange = () => {
-    return Math.floor((dayjs(newRuntime).hour() - 12) * 60 + dayjs(newRuntime).minute());
+    return Math.floor(
+      (dayjs(newRuntime).hour() - 12) * 60 + dayjs(newRuntime).minute()
+    );
   };
 
   const handleUpdateButton = () => {
     if (currentMovie) {
-      dispatch(
-        command.products.update({
-          backdrop_path: newBackdropPath,
-          genre_ids: newGenreId,
-          id: currentMovie.id,
-          original_language: newOriginalLanguage,
-          overview: newOverview,
-          poster_path: newPosterPath,
-          release_date: handleDateChange(),
-          runtime: handleRuntimeChange(),
-          tagline: newTagline,
-          title: newTitle
-        })
-      );
+      const product: Product = {
+        backdrop_path: newBackdropPath,
+        genre_ids: newGenreId,
+        id: currentMovie.id,
+        original_language: newOriginalLanguage,
+        overview: newOverview,
+        poster_path: newPosterPath,
+        release_date: handleDateChange(),
+        runtime: handleRuntimeChange(),
+        tagline: newTagline,
+        title: newTitle
+      };
+
+      dispatch(command.products.update(product));
+      dispatch(command.history.update(product));
     }
   };
 
