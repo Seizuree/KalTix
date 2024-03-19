@@ -4,11 +4,11 @@ import type { Command, FetchURLOptions } from '@nxweb/core';
 import {
   getDetail,
   getGenre,
-  getnowPlaying,
+  getNowPlaying,
   getProducts,
   getRecommendations,
-  gettopRated,
-  getupcoming
+  getTopRated,
+  getUpcoming
 } from '@api/clients/products.js';
 import type { RootModel } from '@models/types.js';
 
@@ -71,9 +71,7 @@ const productsCommand = {
   now_playingLoad: (options?: Readonly<FetchURLOptions>) => {
     return async (dispatch) => {
       try {
-        const [nowplaying] = await Promise.all([
-          getnowPlaying(options)
-        ]);
+        const [nowplaying] = await Promise.all([getNowPlaying(options)]);
 
         if (nowplaying) {
           const value: nowPlaying = {
@@ -81,7 +79,7 @@ const productsCommand = {
           };
 
           dispatch({
-            type: ProductsActionType.now_playingLoad,
+            type: ProductsActionType.NowPlayingLoad,
             value
           });
         }
@@ -93,9 +91,7 @@ const productsCommand = {
   upComingLoad: (options?: Readonly<FetchURLOptions>) => {
     return async (dispatch) => {
       try {
-        const [upcoming] = await Promise.all([
-          getupcoming(options)
-        ]);
+        const [upcoming] = await Promise.all([getUpcoming(options)]);
 
         if (upcoming) {
           const value: upComing = {
@@ -103,7 +99,7 @@ const productsCommand = {
           };
 
           dispatch({
-            type: ProductsActionType.upcomingLoad,
+            type: ProductsActionType.UpcomingLoad,
             value
           });
         }
@@ -115,9 +111,7 @@ const productsCommand = {
   topRatedLoad: (options?: Readonly<FetchURLOptions>) => {
     return async (dispatch) => {
       try {
-        const [topRated] = await Promise.all([
-          gettopRated(options)
-        ]);
+        const [topRated] = await Promise.all([getTopRated(options)]);
 
         if (topRated) {
           const value: topRated = {
@@ -125,7 +119,7 @@ const productsCommand = {
           };
 
           dispatch({
-            type: ProductsActionType.topRatedLoad,
+            type: ProductsActionType.TopratedLoad,
             value
           });
         }
@@ -137,12 +131,17 @@ const productsCommand = {
   detail: (id: string) => {
     return async (dispatch) => {
       try {
-        const [recommendations, detail] = await Promise.all([getRecommendations(id), getDetail(id)]);
+        const [recommendations, detail, genres] = await Promise.all([
+          getRecommendations(id),
+          getDetail(id),
+          getGenre()
+        ]);
 
-        if (recommendations) {
+        if (recommendations && detail) {
           const value: ProductDetailModel = {
             recommendations,
-            detail
+            detail,
+            genres
           };
 
           dispatch({

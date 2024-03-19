@@ -1,6 +1,10 @@
+/* eslint-disable capitalized-comments */
+/* eslint-disable multiline-comment-style */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {
   Bookmark,
@@ -21,18 +25,21 @@ import { useCommand, useStore } from '@models/store.js';
 import Recommendations from '../../components/movies/recommendations';
 
 const Product: PageComponent = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [state, dispatch] = useStore((store) => store.products);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [stateDetail, dispatchDetail] = useStore((store) => store.detail);
+  const [state, dispatch] = useStore((store) => store.detail);
 
   const command = useCommand((cmd) => cmd);
-  const product = useMemo(() => stateDetail?.detail, [stateDetail]);
+  const product = useMemo(() => state?.detail, [state]);
 
   const [heartFilled, setHeartFilled] = useState(false);
   const [starFilled, setStarFilled] = useState(false);
   const [bookmarkFilled, setBookmarkFilled] = useState(false);
   const [load, setLoad] = useState(false);
+
+  const handleUpdate = () => {
+    navigate(`/update/${id}`);
+  };
 
   useEffect(() => {
     dispatch(command.products.load()).catch((err: unknown) => {
@@ -40,7 +47,7 @@ const Product: PageComponent = () => {
     });
 
     if (id) {
-      dispatchDetail(command.products.detail(id))
+      dispatch(command.products.detail(id))
         .catch((err: unknown) => {
           console.error(err);
         })
@@ -48,7 +55,6 @@ const Product: PageComponent = () => {
           setLoad(true);
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const Img = styled('img')(({ theme }) => ({
@@ -63,9 +69,9 @@ const Product: PageComponent = () => {
   const genreNames = useMemo(() => {
     if (!product || !state || !state.genres) return [];
 
-    return product.genres.map((genreId) => {
+    return product.genre_ids.map((genreId: number) => {
       if (state.genres) {
-        const genre = state.genres.find((g) => g.id === genreId.id);
+        const genre = state.genres.find((g) => g.id === genreId);
 
         return genre ? genre.name : 'Unknown';
       }
@@ -98,11 +104,7 @@ const Product: PageComponent = () => {
             <Img
               alt={product?.title}
               height="400"
-              src={
-                product?.poster_path.startsWith('/')
-                  ? `https://image.tmdb.org/t/p/original/${product?.poster_path}`
-                  : product?.poster_path
-              }
+              src={product?.poster_path}
               sx={{ borderRadius: '10px' }} />
             <Box
               sx={{
@@ -116,7 +118,8 @@ const Product: PageComponent = () => {
                 {product?.title} ({product?.release_date.slice(0, 4)})
               </Typography>
               <Typography variant="h6">
-                {product?.release_date} ({product?.original_language}) &#xb7; {duration} h {minutes} m
+                {product?.release_date} ({product?.original_language}) &#xb7;{' '}
+                {duration} h {minutes} m
               </Typography>
               <Box sx={{ display: 'flex', gap: '1rem' }}>
                 {genreNames.map((genreName, index) => (
@@ -174,7 +177,11 @@ const Product: PageComponent = () => {
                 width: '20%'
               }}
             >
-              <Button startIcon={<Pencil />} variant="contained">
+              <Button
+                startIcon={<Pencil />}
+                variant="contained"
+                onClick={handleUpdate}
+              >
                 Edit
               </Button>
               <Button
@@ -194,7 +201,7 @@ const Product: PageComponent = () => {
           </Typography>
           <Recommendations
             direction={direction}
-            recommendations={stateDetail?.recommendations} />
+            recommendations={state?.recommendations} />
         </>
         )
         : <Typography>Loading...</Typography>}

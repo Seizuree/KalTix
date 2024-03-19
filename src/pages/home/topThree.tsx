@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useEffect } from 'react';
 
 import Box from '@mui/material/Box';
@@ -21,40 +22,40 @@ const TopThree = () => {
   return (
     <Box
       sx={{
-        bgcolor: 'primary.main',
-        width: '100%',
-        height: '100%',
-        p: '1%',
-        left: 0,
-        right: 0,
-        justifyContent: 'center',
         alignItems: 'center',
+        bgcolor: 'primary.main',
+        borderRadius: '10px',
+        height: '100%',
+        justifyContent: 'center',
+        left: 0,
         marginBottom: '20px',
         marginTop: '60px',
-        borderRadius: '10px'
+        p: '1%',
+        right: 0,
+        width: '100%'
       }}
     >
-        <Typography
-          sx={{
-            color: 'white'
-          }}
-          variant="h1"
-        >TOP 3 MOVIES RIGHT NOW!
-        </Typography>
-        <ImageList
-          cols={3}
-          sx={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            width: '100%'
-
-          }}
-        >
-           {state?.topRated
-             ? state.topRated.map((top, index) => (
+      <Typography
+        sx={{
+          color: 'white'
+        }}
+        variant="h1"
+      >
+        TOP 3 MOVIES RIGHT NOW!
+      </Typography>
+      <ImageList
+        cols={3}
+        sx={{
+          alignItems: 'center',
+          height: '100%',
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
+        {state?.topRated
+             ? state.topRated.map((top) => (
             <ImageListItem
-              key={index}
+              key={top.id}
               sx={{
                 height: '70%',
                 width: '70%',
@@ -70,7 +71,7 @@ const TopThree = () => {
             </ImageListItem>
              ))
              : <div>No data available</div>}
-        </ImageList>
+      </ImageList>
     </Box>
   );
 };

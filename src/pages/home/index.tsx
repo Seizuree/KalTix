@@ -8,7 +8,7 @@ import { useSettings } from '@hooks/use-settings';
 
 import AddMovie from './addMovie';
 import NowPlaying from './nowPlaying';
-import  TopSec  from './top';
+import TopSec from './top';
 import TopThree from './topThree';
 import Upcoming from './upcoming';
 
@@ -18,35 +18,32 @@ const Home: PageComponent = () => {
   } = useSettings();
 
   return (
+    <Box>
+      <Grid container={true}>
+        <Grid item={true} xs={12}>
+          <TopSec />
+        </Grid>
+      </Grid>
 
-        <Box>
+      <NowPlaying />
 
-          <Grid container={true}>
-            <Grid item={true} xs={12}>
-            <TopSec />
-            </Grid>
-          </Grid>
+      <TopThree />
 
-        <NowPlaying />
+      <Grid item={true} sx={{ mt: '40px', pb: 4 }} xs={12}>
+        <Typography
+          sx={{
+            color: 'primary.main'
+          }}
+          variant="h1"
+        >
+          UPCOMING
+        </Typography>
+      </Grid>
 
-          <TopThree />
+      <Upcoming direction={direction} />
 
-          <Grid item={true} sx={{ pb: 4, mt: '40px' }} xs={12}>
-            <Typography
-              sx={{
-                color: 'primary.main'
-              }}
-              variant="h1"
-            >UPCOMING
-            </Typography>
-          </Grid>
-
-          <Upcoming direction={direction} />
-
-          <AddMovie />
-
-        </Box>
-
+      <AddMovie />
+    </Box>
   );
 };
 

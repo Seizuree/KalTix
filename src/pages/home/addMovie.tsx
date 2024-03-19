@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { useNavigate } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
@@ -16,44 +17,41 @@ const AddMovie = () => {
   };
 
   return (
-
     <Grid
       container={true}
       sx={{
-        marginTop: '40px',
-        justifyContent : 'center',
+        justifyContent: 'center',
+        marginTop: '40px'
       }}
     >
-        <Grid item={true} xs={8}>
+      <Grid item={true} xs={8}>
         <Card>
-      <CardContent
-        sx={{
-          display: 'flex',
-          textAlign: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          p: (theme) => `${theme.spacing(9.75, 5, 9.25)} !important`
-        }}
-      >
-        <Movie style={{ width: '50px', height: '50px', marginBottom: 2.25 }} />
-        <Typography sx={{ mb: 2.75 }} variant="h4">
-          Add Your Favourite Movie
-        </Typography>
-        <Typography sx={{ mb: 6, color: 'text.secondary' }}>
-          You can add your favourite movie on Kaltix. We always appriciate
-          your way to help us. You can add movie by clicking the button below
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={handleDetail}
-
-        >Add Movie
-        </Button>
-      </CardContent>
+          <CardContent
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              p: (theme) => `${theme.spacing(9.75, 5, 9.25)} !important`,
+              textAlign: 'center'
+            }}
+          >
+            <Movie
+              style={{ height: '50px', marginBottom: 2.25, width: '50px' }} />
+            <Typography sx={{ mb: 2.75 }} variant="h4">
+              Add Your Favourite Movie
+            </Typography>
+            <Typography sx={{ color: 'text.secondary', mb: 6 }}>
+              You can add your favourite movie on Kaltix. We always appriciate
+              your way to help us. You can add movie by clicking the button
+              below
+            </Typography>
+            <Button variant="contained" onClick={handleDetail}>
+              Add Movie
+            </Button>
+          </CardContent>
         </Card>
-        </Grid>
+      </Grid>
     </Grid>
-
   );
 };
 
