@@ -17,6 +17,7 @@ import { ProductsActionType } from './types.js';
 import type {
   nowPlaying,
   Product,
+  ProductDeleted,
   ProductDetailModel,
   ProductsAction,
   ProductsModel,
@@ -25,9 +26,18 @@ import type {
 } from './types.js';
 
 const productsCommand = {
-  clear: (): ProductsAction => {
-    return {
-      type: ProductsActionType.Clear
+  delete: (id: number) => {
+    return (dispatch) => {
+      if (id) {
+        const value: ProductDeleted = {
+          id
+        };
+
+        dispatch({
+          type: ProductsActionType.Delete,
+          value
+        });
+      }
     };
   },
   create: (product: Product) => {
