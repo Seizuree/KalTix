@@ -21,8 +21,17 @@ const productsReducer = (
   switch (action.type) {
     case ProductsActionType.Load:
       return !state.products ? { ...action.value } : { ...state };
-    case ProductsActionType.Clear:
-      return {};
+    case ProductsActionType.Delete:
+      const productIdToDelete = action.value; // Assuming action.value contains the ID of the product to delete
+
+      return {
+        ...state,
+        products: state.products
+          ? state.products.filter(
+            (product) => product.id !== productIdToDelete.id
+          )
+          : []
+      };
     case ProductsActionType.Create:
       newProducts = action.value?.products ?? [];
 
@@ -55,8 +64,6 @@ const productDetailReducer = (
   switch (action.type) {
     case ProductsActionType.Detail:
       return { ...state, ...action.value };
-    case ProductsActionType.Clear:
-      return {};
 
     default:
       return state;
