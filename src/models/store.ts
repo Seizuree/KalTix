@@ -6,6 +6,8 @@ import {
   createStoreProvider
 } from '@nxweb/react';
 
+import { historyCommand } from './history/commands.js';
+import { historyReducer } from './history/reducer.js';
 import { productsCommand } from './products/commands.js';
 import {
   now_playingReducer,
@@ -20,6 +22,7 @@ import type { RootAction, RootModel } from './types.js';
 // ** Init reducers
 const rootReducer = combineReducers({
   detail: productDetailReducer,
+  history: historyReducer,
   now_playing: now_playingReducer,
   products: productsReducer,
   topRated: topRatedreducer,
@@ -29,6 +32,7 @@ const rootReducer = combineReducers({
 // ** Init models
 const rootModel: RootModel = {
   detail: {},
+  history: {},
   now_playing: {},
   products: {},
   topRated: {},
@@ -37,6 +41,7 @@ const rootModel: RootModel = {
 
 // ** Init commands
 const rootCommand = {
+  history: historyCommand,
   products: productsCommand
 };
 

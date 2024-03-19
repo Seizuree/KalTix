@@ -115,7 +115,7 @@ const Recommendations = (Recommendations: RecommendationsProps) => {
       ))}
         </Box>
       )
-      : <div> no data </div>}
+      : <Typography> no data </Typography>}
     </>
   );
 };
