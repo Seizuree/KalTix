@@ -53,15 +53,18 @@ const Recommendations = (Recommendations: RecommendationsProps) => {
   });
 
   return (
-    <Box
-      className="keen-slider"
-      ref={ref}
-      sx={{
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'row'
-      }}
-    >
+    <>
+    {recommendations
+      ? (
+        <Box
+          className="keen-slider"
+          ref={ref}
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row'
+          }}
+        >
       {recommendations?.map((product) => (
         <div className="keen-slider__slide" key={product?.id}>
           <Box
@@ -110,7 +113,10 @@ const Recommendations = (Recommendations: RecommendationsProps) => {
           <Typography>{product?.title}</Typography>
         </div>
       ))}
-    </Box>
+        </Box>
+      )
+      : <div> no data </div>}
+    </>
   );
 };
 
