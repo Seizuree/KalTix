@@ -31,8 +31,8 @@ const AddMovie = () => {
               alignItems: 'center',
               display: 'flex',
               flexDirection: 'column',
-              textAlign: 'center',
-              p: (theme) => `${theme.spacing(9.75, 5, 9.25)} !important`
+              p: (theme) => `${theme.spacing(9.75, 5, 9.25)} !important`,
+              textAlign: 'center'
             }}
           >
             <Movie
