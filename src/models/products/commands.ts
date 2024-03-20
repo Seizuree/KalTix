@@ -16,8 +16,6 @@ import { ProductsActionType } from './types.js';
 
 import type {
   nowPlaying,
-  Product,
-  ProductDeleted,
   ProductDetailModel,
   ProductsAction,
   ProductsModel,
@@ -26,34 +24,6 @@ import type {
 } from './types.js';
 
 const productsCommand = {
-  delete: (id: number) => {
-    return (dispatch) => {
-      if (id) {
-        const value: ProductDeleted = {
-          id
-        };
-
-        dispatch({
-          type: ProductsActionType.Delete,
-          value
-        });
-      }
-    };
-  },
-  create: (product: Product) => {
-    return (dispatch) => {
-      if (product) {
-        const value: ProductsModel = {
-          products: [product]
-        };
-
-        dispatch({
-          type: ProductsActionType.Create,
-          value
-        });
-      }
-    };
-  },
   load: (options?: Readonly<FetchURLOptions>) => {
     return async (dispatch) => {
       try {
@@ -161,20 +131,6 @@ const productsCommand = {
         }
       } catch (err) {
         console.error(err);
-      }
-    };
-  },
-  update: (product: Product) => {
-    return (dispatch) => {
-      if (product) {
-        const value: ProductsModel = {
-          products: [product]
-        };
-
-        dispatch({
-          type: ProductsActionType.Update,
-          value
-        });
       }
     };
   }

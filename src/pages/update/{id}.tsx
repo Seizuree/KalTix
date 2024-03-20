@@ -43,11 +43,11 @@ const UpdateMovie: PageComponent = () => {
   const command = useCommand((cmd) => cmd);
 
   useEffect(() => {
-    dispatch(command.products.load());
+    dispatch(command.history.load());
   }, []);
 
   const currentMovie = useMemo(
-    () => state?.products?.products?.find((current) => current.id?.toString() === id),
+    () => state?.history?.history?.find((current) => current.id?.toString() === id),
     [state, id]
   );
 
@@ -174,7 +174,6 @@ const UpdateMovie: PageComponent = () => {
         title: newTitle
       };
 
-      dispatch(command.products.update(product));
       dispatch(command.history.update(product));
     }
   };
