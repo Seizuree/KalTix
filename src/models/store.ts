@@ -16,6 +16,8 @@ import {
   topRatedreducer,
   upcomingReducer
 } from './products/reducers.js';
+import { searchCommand } from './search/commands.js';
+import { searchReducer } from './search/reducer.js';
 
 import type { RootAction, RootModel } from './types.js';
 
@@ -26,7 +28,8 @@ const rootReducer = combineReducers({
   now_playing: now_playingReducer,
   products: productsReducer,
   topRated: topRatedreducer,
-  upcoming: upcomingReducer
+  upcoming: upcomingReducer,
+  search: searchReducer
 });
 
 // ** Init models
@@ -36,13 +39,15 @@ const rootModel: RootModel = {
   now_playing: {},
   products: {},
   topRated: {},
-  upcoming: {}
+  upcoming: {},
+  search: {}
 };
 
 // ** Init commands
 const rootCommand = {
   history: historyCommand,
-  products: productsCommand
+  products: productsCommand,
+  search: searchCommand
 };
 
 // ** Create store

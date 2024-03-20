@@ -53,7 +53,7 @@ const TopThree = () => {
         }}
       >
         {state?.topRated
-             ? state.topRated.map((top) => (
+          ? state.topRated.map((top) => (
             <ImageListItem
               key={top.id}
               sx={{
@@ -69,8 +69,8 @@ const TopThree = () => {
               <ImageListItemBar
                 title={top.title} />
             </ImageListItem>
-             ))
-             : <div>No data available</div>}
+          ))
+          : <div>No data available</div>}
       </ImageList>
     </Box>
   );

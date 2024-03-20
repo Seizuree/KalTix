@@ -2,6 +2,7 @@ import {
   History,
   Movie,
   MovieOff,
+  Search,
   SmartHome
 } from '@nxweb/icons/tabler';
 
@@ -19,6 +20,12 @@ export const navigation: readonly HorizontalNavItemsType[] = [
     id: 'products',
     link: '/movies',
     text: 'Movies'
+  },
+  {
+    icon: <Search />,
+    id: 'search',
+    link: '/search',
+    text: 'Search Movies'
   },
   {
     icon: <MovieOff />,

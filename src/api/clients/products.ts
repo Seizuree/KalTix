@@ -16,6 +16,7 @@ interface productsAPIResponse {
   topRated: Product []
   total: number
   upcoming: Product[]
+  search: Product[]
 }
 
 export const endpoint =
@@ -117,6 +118,21 @@ export const getTopRated = async (options?: Readonly<FetchURLOptions>) => {
   const { results }: any  = (await API().get(tPUrl.toString())).data;
   const some = results.slice(0, 3);
   const response = some as productsAPIResponse['topRated'];
+
+  return response;
+};
+
+export const searchMovies = async (id: string, options?: Readonly<FetchURLOptions>) => {
+  const searchEndpoint = `search/movie?query=${id}`;
+  const searchUrl = apiURL(searchEndpoint, options);
+  const { results }: any  = (await API().get(searchUrl.toString())).data;
+  const response = results as productsAPIResponse['search'];
+
+  response.forEach((element) => {
+    const poster = `https://image.tmdb.org/t/p/original/${element.poster_path}`;
+
+    element.poster_path = poster;
+  });
 
   return response;
 };
