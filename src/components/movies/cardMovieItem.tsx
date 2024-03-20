@@ -80,7 +80,7 @@ const CardMovieItem = ({ product }: CardMovieItemProps) => {
               width: '100%'
             }}
           >
-            <IconButton size="small">
+            <IconButton size="small" onClick={handleDelete}>
               <MovieOff />
             </IconButton>
             <Button variant="text" onClick={() => toDetail(product.id)}>
