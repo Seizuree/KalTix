@@ -33,7 +33,7 @@ const Product: PageComponent = () => {
   const command = useCommand((cmd) => cmd);
 
   const product = useMemo(() => {
-    let product = state?.products?.products?.find(
+    let product = state?.history?.history?.find(
       (o) => o.id.toString() === id
     );
     if (!product) {
@@ -54,7 +54,7 @@ const Product: PageComponent = () => {
 
   const handleDelete = () => {
     if (product?.id) {
-      dispatch(command.products.delete(product?.id));
+      // dispatch(command.products.delete(product?.id));
       dispatch(command.history.delete(product?.id));
       navigate('/movies');
     }

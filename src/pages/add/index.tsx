@@ -135,7 +135,7 @@ const AddMovie: PageComponent = () => {
       title: newTitle
     };
 
-    dispatch(command.products.create(product));
+    // dispatch(command.products.create(product));
     dispatch(command.history.create(product));
   };
 

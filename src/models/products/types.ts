@@ -53,22 +53,13 @@ interface ProductDetailModel {
 
 enum ProductsActionType {
   Load = 'products-load',
-  Delete = 'product-delete',
   Detail = 'products-detail',
-  Create = 'products-create',
-  Update = 'products-update',
   NowPlayingLoad = 'products-now_playing',
   UpcomingLoad = 'products-upcoming',
   TopratedLoad = 'product-toprated'
 }
 
 type ProductsAction = {
-  type: ProductsActionType.Create
-  value?: ProductsModel
-} | {
-  type: ProductsActionType.Delete
-  value: ProductDeleted
-} | {
   type: ProductsActionType.Detail
   value?: ProductDetailModel
 } | {
@@ -83,8 +74,6 @@ type ProductsAction = {
 } | {
   type: ProductsActionType.UpcomingLoad
   value?: upComing
-} | { type: ProductsActionType.Update
-  value?: ProductsModel
 } ;
 
 export { ProductsActionType };

@@ -5,7 +5,6 @@ import { ProductsActionType } from './types.js';
 
 import type {
   nowPlaying,
-  Product,
   ProductDetailModel,
   ProductsAction,
   ProductsModel,
@@ -17,40 +16,9 @@ const productsReducer = (
   state: ProductsModel = {},
   action: Readonly<ProductsAction>
 ): ProductsModel => {
-  let newProducts: Product[] = [];
   switch (action.type) {
     case ProductsActionType.Load:
       return !state.products ? { ...action.value } : { ...state };
-    case ProductsActionType.Delete:
-      const productIdToDelete = action.value; // Assuming action.value contains the ID of the product to delete
-
-      return {
-        ...state,
-        products: state.products
-          ? state.products.filter(
-            (product) => product.id !== productIdToDelete.id
-          )
-          : []
-      };
-    case ProductsActionType.Create:
-      newProducts = action.value?.products ?? [];
-
-      return {
-        ...state,
-        products: state.products
-          ? [...state.products, ...newProducts]
-          : newProducts
-      };
-    case ProductsActionType.Update:
-      const updatedProducts = action.value?.products ?? [];
-      const updatedProductId = updatedProducts[0]?.id;
-
-      return {
-        ...state,
-        products: (state.products ?? []).map((product: Product) => (product.id === updatedProductId
-          ? { ...product, ...updatedProducts[0] }
-          : product))
-      };
 
     default:
       return state;
