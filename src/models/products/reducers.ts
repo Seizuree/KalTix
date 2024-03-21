@@ -22,7 +22,7 @@ const productsReducer = (
     case ProductsActionType.Load:
       return !state.products ? { ...action.value } : { ...state };
     case ProductsActionType.Delete:
-      const productIdToDelete = action.value; // Assuming action.value contains the ID of the product to delete
+      const productIdToDelete = action.value;
 
       return {
         ...state,
