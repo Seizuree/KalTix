@@ -40,6 +40,10 @@ const Product: PageComponent = () => {
       product = state.detail?.detail;
     }
 
+    if (product && !product?.runtime && state.detail?.detail?.runtime) {
+      product.runtime = state.detail.detail.runtime;
+    }
+
     return product;
   }, [state, id]);
 
@@ -95,6 +99,7 @@ const Product: PageComponent = () => {
     });
   }, [product, state]);
 
+  console.log(product);
   const duration = Math.floor((product?.runtime ?? 0) / 60);
   const minutes = (product?.runtime ?? 0) % 60;
 
