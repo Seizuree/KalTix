@@ -116,9 +116,7 @@ const AddMovie: PageComponent = () => {
   };
 
   const handleRuntimeChange = () => {
-    return Math.floor(
-      (dayjs(newRuntime).hour() - 12) * 60 + dayjs(newRuntime).minute()
-    );
+    return Math.floor(dayjs(newRuntime).hour() % 12 * 60 + dayjs(newRuntime).minute());
   };
 
   const handleAddButton = () => {
