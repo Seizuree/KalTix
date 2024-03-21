@@ -99,7 +99,6 @@ const Product: PageComponent = () => {
     });
   }, [product, state]);
 
-  console.log(product);
   const duration = Math.floor((product?.runtime ?? 0) / 60);
   const minutes = (product?.runtime ?? 0) % 60;
 
