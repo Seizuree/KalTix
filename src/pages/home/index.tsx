@@ -6,11 +6,11 @@ import type { PageComponent } from '@nxweb/react';
 
 import { useSettings } from '@hooks/use-settings';
 
-import AddMovie from './addMovie';
-import NowPlaying from './nowPlaying';
-import TopSec from './top';
-import TopThree from './topThree';
-import Upcoming from './upcoming';
+import AddMovie from '../../components/home/addMovie';
+import NowPlaying from '../../components/home/nowPlaying';
+import TopSec from '../../components/home/top';
+import TopThree from '../../components/home/topThree';
+import Upcoming from '../../components/home/upcoming';
 
 const Home: PageComponent = () => {
   const {

@@ -54,8 +54,9 @@ const Recommendations = (Recommendations: RecommendationsProps) => {
 
   return (
     <>
-    {recommendations
-      ? (
+    {recommendations?.length === 0
+      ? <Typography> no data </Typography>
+      : (
         <Box
           className="keen-slider"
           ref={ref}
@@ -114,8 +115,8 @@ const Recommendations = (Recommendations: RecommendationsProps) => {
         </div>
       ))}
         </Box>
-      )
-      : <Typography> no data </Typography>}
+      )}
+
     </>
   );
 };
